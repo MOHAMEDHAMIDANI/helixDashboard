@@ -1,5 +1,7 @@
 <template>
-  <div class=" w-full h-full  bg-white">
+  <div style="
+  
+  " class=" w-full h-full  bg-white">
     <MainLoader />
     <nuxtPage/>
   </div>

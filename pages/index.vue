@@ -1,6 +1,7 @@
 <template>
     <mainLayout>
         <h1>Home</h1>
+        <notification />
     </mainLayout>
 </template>
 
