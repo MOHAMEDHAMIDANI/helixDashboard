@@ -1,8 +1,6 @@
 <template>
     <header class="h-16 shrink-0 flex items-center justify-between border-b border-gray-200 px-4 sm:px-6 gap-3">
-        <!-- Left side - Navigation controls -->
         <div class="flex items-center gap-3 min-w-0">
-            <!-- Desktop sidebar toggle -->
             <button @click="NavStore.toggleNav" type="button" aria-label="Toggle sidebar"
                 class="hidden lg:flex p-1.5 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 <svg :class="NavStore.NavIsOpen ? 'size-5' : 'size-5 rotate-180'" xmlns="http://www.w3.org/2000/svg"
@@ -11,8 +9,6 @@
                         d="M3 7.063h14c.41 0 .75-.34.75-.75s-.34-.75-.75-.75H3c-.41 0-.75.34-.75.75s.34.75.75.75m0 6h10c.41 0 .75-.34.75-.75s-.34-.75-.75-.75H3c-.41 0-.75.34-.75.75s.34.75.75.75m14 6H3c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h14c.41 0 .75.34.75.75s-.34.75-.75.75m3.55-2.15c.13.1.29.15.45.15v-.01c.23 0 .45-.11.6-.3c.25-.33.19-.8-.14-1.05l-1.15-.88c-1.59-1.2-2.55-1.94-2.55-2.52s.958-1.309 2.545-2.517l.005-.003l1.15-.88a.749.749 0 1 0-.91-1.19l-1.15.88l-.062.046c-1.98 1.51-3.078 2.347-3.078 3.674c0 1.337 1.106 2.177 3.13 3.712l.01.008z" />
                 </svg>
             </button>
-
-            <!-- Mobile sidebar toggle -->
             <button @click="NavStore.toggleNav" type="button" aria-label="Toggle sidebar"
                 class="lg:hidden p-1.5 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
@@ -21,24 +17,23 @@
                 </svg>
             </button>
 
-            <h1 class="font-semibold truncate text-gray-900">Home</h1>
+            <h1 class="font-semibold truncate text-gray-900 capitalize">
+                {{useRoute().fullPath.split('/').filter(segment => isNaN(segment)).join(' > ') || 'Dashboard'}}
+            </h1>
         </div>
 
-        <!-- Right side - Action buttons -->
         <div class="flex items-center gap-3 shrink-0">
-            <!-- Notifications button -->
             <button type="button" @click="notificationStore.toggleNotification"
                 class="p-1.5 rounded-md hover:bg-gray-100 transition-colors relative focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 aria-label="Notifications">
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="1.5"
                         d="M14.857 17.082a24 24 0 0 0 5.454-1.31A8.97 8.97 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.97 8.97 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.3 24.3 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
                 </svg>
-                <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-600 ring-1 ring-white"></span>
+                <span class="absolute top-1 right-1.5 h-2 w-2 rounded-full bg-red-600 ring-1 ring-white"></span>
             </button>
 
-            <!-- Add button with dropdown -->
             <div class="relative">
                 <button ref="addButton" @click="openAdd = !openAdd" type="button"
                     class="p-1.5 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -49,7 +44,6 @@
                     </svg>
                 </button>
 
-                <!-- Dropdown menu -->
                 <transition enter-active-class="transition ease-out duration-100"
                     enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
                     leave-active-class="transition ease-in duration-75"
@@ -57,7 +51,7 @@
                     <div v-if="openAdd"
                         class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20 origin-top-right">
                         <div class="py-1" role="menu" aria-orientation="vertical">
-                            <a href="#"
+                            <nuxtLink :to="{ name: 'Product' }"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 role="menuitem">
                                 <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg"
@@ -68,9 +62,9 @@
                                     </g>
                                 </svg>
                                 <span>New product</span>
-                            </a>
+                            </nuxtLink>
 
-                            <a href="#"
+                            <nuxtLink :to="{ name: 'User' }"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 role="menuitem">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500"
@@ -82,9 +76,9 @@
                                     </g>
                                 </svg>
                                 <span>New user</span>
-                            </a>
+                            </nuxtLink>
 
-                            <a href="#"
+                            <nuxtLink :to="{ name: 'Category' }"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 role="menuitem">
                                 <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +88,7 @@
                                         d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 3h6m-3-3v6" />
                                 </svg>
                                 <span>New category</span>
-                            </a>
+                            </nuxtLink>
                         </div>
                     </div>
                 </transition>

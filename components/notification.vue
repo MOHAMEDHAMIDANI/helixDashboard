@@ -58,15 +58,7 @@
                 <p class="text-sm text-gray-500 truncate mt-1">subscribed to your email list</p>
               </div>
             </a>
-
-            <!-- Empty state (example) -->
-            <!-- <div class="p-8 text-center text-gray-500">
-              <span class="iconify i-lucide:bell-off inline-block size-6 mb-2"></span>
-              <p>No new notifications</p>
-            </div> -->
           </div>
-
-          <!-- Footer -->
           <div class="p-3 border-t border-gray-200 bg-gray-50">
             <a href="/notifications"
               class="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors flex items-center justify-center gap-1">
