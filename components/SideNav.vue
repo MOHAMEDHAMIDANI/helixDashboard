@@ -8,8 +8,8 @@
             <button type="button"
                 class="p-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center w-full"
                 @click="NavStore.toggleNav">
-                <img src="https://github.com/nuxt.png" alt="Nuxt" class="h-8 w-8 rounded-full">
-                <span v-if="NavStore.NavIsOpen" class="font-semibold text-gray-800 ml-2">Nuxt Admin</span>
+                <img src="/public/favicon.ico" class="h-8 w-8 rounded-full">
+                <span v-if="NavStore.NavIsOpen" class="font-semibold text-gray-800 ml-2">hilex dashboard</span>
             </button>
         </div>
 
