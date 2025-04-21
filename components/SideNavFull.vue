@@ -1,135 +1,201 @@
 <template>
-    <div data-state="open" v-if="NavStore.NavIsOpen"
-        class="fixed inset-0 bg-(--ui-bg-elevated)/75 data-[state=open]:animate-[fade-in_200ms_ease-out] data-[state=closed]:animate-[fade-out_200ms_ease-in] lg:hidden"
-        style="pointer-events: auto;" data-aria-hidden="true" aria-hidden="true">
-        <div data-dismissable-layer="" id="" role="dialog" aria-describedby="reka-dialog-description-v-0-17"
-            aria-labelledby="reka-dialog-title-v-0-16" data-state="open" data-side="left" tabindex="-1"
-            class="fixed bg-(--ui-bg) divide-y divide-(--ui-border) sm:ring ring-(--ui-border) sm:shadow-lg flex flex-col focus:outline-none left-0 inset-y-0 w-full max-w-md data-[state=open]:animate-[slide-in-from-left_200ms_ease-in-out] data-[state=closed]:animate-[slide-out-to-left_200ms_ease-in-out] lg:hidden"
-            style="pointer-events: auto;"><!---->
-            <div class="h-(--ui-header-height) shrink-0 flex items-center gap-1.5 px-4 sm:px-6"><button type="button"
-                    aria-label="Close sidebar"
-                    class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-(--ui-text) hover:bg-(--ui-bg-elevated) focus:outline-none focus-visible:bg-(--ui-bg-elevated) hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent p-1.5 lg:hidden"><span
-                        class="iconify i-lucide:x shrink-0 size-5"
-                        aria-hidden="true"></span><!----><!----></button><button type="button"
-                    id="reka-dropdown-menu-trigger-v-0-18" aria-haspopup="menu" aria-expanded="false"
-                    data-state="closed"
-                    class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 text-sm gap-1.5 w-full justify-center text-(--ui-text) hover:bg-(--ui-bg-elevated) focus:outline-none focus-visible:bg-(--ui-bg-elevated) hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent data-[state=open]:bg-(--ui-bg-elevated) py-2"><span
-                        class="inline-flex items-center justify-center select-none overflow-hidden rounded-full align-middle bg-(--ui-bg-elevated) size-5 text-[10px] shrink-0"><img
-                            role="img" src="https://github.com/nuxt.png" alt="Nuxt" width="20" height="20"
-                            class="h-full w-full rounded-[inherit] object-cover"></span><span
-                        class="truncate">Nuxt</span><span
-                        class="iconify i-lucide:chevrons-up-down shrink-0 size-5 ms-auto text-(--ui-text-dimmed)"
-                        aria-hidden="true"></span></button><!----><!----></div>
-            <div class="flex flex-col gap-4 flex-1 overflow-y-auto px-4 py-2 sm:px-6"><button type="button"
-                    class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset text-(--ui-text) hover:bg-(--ui-bg-elevated) disabled:bg-(--ui-bg) aria-disabled:bg-(--ui-bg) focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ui-border-inverted) bg-transparent ring-(--ui-border)"><span
-                        class="iconify i-lucide:search shrink-0 size-5" aria-hidden="true"></span><span
-                        class="truncate">Search...</span>
-                    <div class="hidden lg:flex items-center gap-0.5 ms-auto"><kbd
-                            class="inline-flex items-center justify-center px-1 rounded-(--ui-radius) font-medium font-sans bg-(--ui-bg-elevated) text-(--ui-text) ring ring-inset ring-(--ui-border-accented) h-5 min-w-[20px] text-[11px]">⊞</kbd><kbd
-                            class="inline-flex items-center justify-center px-1 rounded-(--ui-radius) font-medium font-sans bg-(--ui-bg-elevated) text-(--ui-text) ring ring-inset ring-(--ui-border-accented) h-5 min-w-[20px] text-[11px]">K</kbd>
-                    </div>
-                </button><!----><!---->
-                <nav aria-label="Main" data-orientation="vertical" dir="ltr" data-reka-navigation-menu=""
-                    class="relative flex gap-1.5 [&amp;>div]:min-w-0 flex-col">
-                    <div style="position: relative;">
-                        <ul class="isolate min-w-0" data-orientation="vertical">
-                            <li data-menu-item="" class="min-w-0"><a href="/"
-                                    class="group relative w-full flex items-center gap-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) flex-row px-2.5 py-1.5 before:inset-y-px before:inset-x-0 text-(--ui-primary) before:bg-(--ui-bg-elevated)"
-                                    data-active="" aria-current="page" data-reka-collection-item=""><span
-                                        class="iconify i-lucide:house shrink-0 size-5 text-(--ui-primary) group-data-[state=open]:text-(--ui-primary)"
-                                        aria-hidden="true"></span><span
-                                        class="truncate">Home<!----></span><!----></a><!----></li>
-                            <li data-menu-item="" class="min-w-0"><a href="/inbox"
-                                    class="group relative w-full flex items-center gap-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) flex-row px-2.5 py-1.5 before:inset-y-px before:inset-x-0 text-(--ui-text-muted) hover:text-(--ui-text-highlighted) hover:before:bg-(--ui-bg-elevated)/50 transition-colors before:transition-colors"
-                                    data-reka-collection-item=""><span
-                                        class="iconify i-lucide:inbox shrink-0 size-5 text-(--ui-text-dimmed) group-hover:text-(--ui-text) transition-colors"
-                                        aria-hidden="true"></span><span class="truncate">Inbox<!----></span><span
-                                        class="ms-auto inline-flex gap-1.5 items-center"><span
-                                            class="font-medium inline-flex items-center text-[10px]/3 px-1.5 py-1 gap-1 rounded-[calc(var(--ui-radius))] ring ring-inset ring-(--ui-border-accented) text-(--ui-text) bg-(--ui-bg) shrink-0"><!----><span
-                                                class="truncate">4</span><!----></span><!----></span></a><!----></li>
-                            <li data-menu-item="" class="min-w-0"><a href="/customers"
-                                    class="group relative w-full flex items-center gap-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) flex-row px-2.5 py-1.5 before:inset-y-px before:inset-x-0 text-(--ui-text-muted) hover:text-(--ui-text-highlighted) hover:before:bg-(--ui-bg-elevated)/50 transition-colors before:transition-colors"
-                                    data-reka-collection-item=""><span
-                                        class="iconify i-lucide:users shrink-0 size-5 text-(--ui-text-dimmed) group-hover:text-(--ui-text) transition-colors"
-                                        aria-hidden="true"></span><span
-                                        class="truncate">Customers<!----></span><!----></a><!----></li>
-                            <li data-state="open" class="min-w-0" value="3"><button type="button" aria-controls=""
-                                    aria-expanded="true" data-state="open"
-                                    class="group relative w-full flex items-center gap-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) flex-row px-2.5 py-1.5 before:inset-y-px before:inset-x-0 text-(--ui-text-muted) hover:text-(--ui-text-highlighted) hover:before:bg-(--ui-bg-elevated)/50 transition-colors before:transition-colors"
-                                    data-reka-collection-item=""><span
-                                        class="iconify i-lucide:settings shrink-0 size-5 text-(--ui-text-dimmed) group-hover:text-(--ui-text) transition-colors"
-                                        aria-hidden="true"></span><span class="truncate">Settings<!----></span><span
-                                        class="ms-auto inline-flex gap-1.5 items-center"><!----><span
-                                            class="iconify i-lucide:chevron-down size-5 transform shrink-0 group-data-[state=open]:rotate-180 transition-transform duration-200"
-                                            aria-hidden="true"></span></span></button><!---->
-                                <div class="data-[state=open]:animate-[collapsible-down_200ms_ease-out] data-[state=closed]:animate-[collapsible-up_200ms_ease-out] overflow-hidden"
-                                    id="reka-collapsible-content-v-0-20"
-                                    style="--reka-collapsible-content-height: 127.95000457763672px; --reka-collapsible-content-width: 400px; transition-duration: 0s; animation-name: none;"
-                                    data-state="open">
-                                    <ul class="ms-5 border-s border-(--ui-border)">
-                                        <li data-menu-item="" class="ps-1.5 -ms-px"><a href="/settings"
-                                                class="group relative w-full flex items-center gap-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) flex-row px-2.5 py-1.5 before:inset-y-px before:inset-x-0 text-(--ui-text-muted) hover:text-(--ui-text-highlighted) hover:before:bg-(--ui-bg-elevated)/50 transition-colors before:transition-colors"
-                                                data-reka-collection-item=""><!----><span
-                                                    class="truncate">General<!----></span><!----></a><!----></li>
-                                        <li data-menu-item="" class="ps-1.5 -ms-px"><a href="/settings/members"
-                                                class="group relative w-full flex items-center gap-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) flex-row px-2.5 py-1.5 before:inset-y-px before:inset-x-0 text-(--ui-text-muted) hover:text-(--ui-text-highlighted) hover:before:bg-(--ui-bg-elevated)/50 transition-colors before:transition-colors"
-                                                data-reka-collection-item=""><!----><span
-                                                    class="truncate">Members<!----></span><!----></a><!----></li>
-                                        <li data-menu-item="" class="ps-1.5 -ms-px"><a href="/settings/notifications"
-                                                class="group relative w-full flex items-center gap-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) flex-row px-2.5 py-1.5 before:inset-y-px before:inset-x-0 text-(--ui-text-muted) hover:text-(--ui-text-highlighted) hover:before:bg-(--ui-bg-elevated)/50 transition-colors before:transition-colors"
-                                                data-reka-collection-item=""><!----><span
-                                                    class="truncate">Notifications<!----></span><!----></a><!----></li>
-                                        <li data-menu-item="" class="ps-1.5 -ms-px"><a href="/settings/security"
-                                                class="group relative w-full flex items-center gap-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) flex-row px-2.5 py-1.5 before:inset-y-px before:inset-x-0 text-(--ui-text-muted) hover:text-(--ui-text-highlighted) hover:before:bg-(--ui-bg-elevated)/50 transition-colors before:transition-colors"
-                                                data-reka-collection-item=""><!----><span
-                                                    class="truncate">Security<!----></span><!----></a><!----></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div><!----><!---->
-                </nav><!----><!---->
-                <nav aria-label="Main" data-orientation="vertical" dir="ltr" data-reka-navigation-menu=""
-                    class="relative flex gap-1.5 [&amp;>div]:min-w-0 flex-col mt-auto">
-                    <div style="position: relative;">
-                        <ul class="isolate min-w-0" data-orientation="vertical">
-                            <li data-menu-item="" class="min-w-0"><a href="https://github.com/nuxt-ui-pro/dashboard"
-                                    rel="noopener noreferrer" target="_blank"
-                                    class="group relative w-full flex items-center gap-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) flex-row px-2.5 py-1.5 before:inset-y-px before:inset-x-0 text-(--ui-text-muted) hover:text-(--ui-text-highlighted) hover:before:bg-(--ui-bg-elevated)/50 transition-colors before:transition-colors"
-                                    data-reka-collection-item=""><span
-                                        class="iconify i-lucide:message-circle shrink-0 size-5 text-(--ui-text-dimmed) group-hover:text-(--ui-text) transition-colors"
-                                        aria-hidden="true"></span><span class="truncate">Feedback<span
-                                            class="iconify i-lucide:arrow-up-right inline-block size-3 align-top text-(--ui-text-dimmed)"
-                                            aria-hidden="true"></span></span><!----></a><!----></li>
-                            <li data-menu-item="" class="min-w-0"><a href="https://github.com/nuxt/ui-pro"
-                                    rel="noopener noreferrer" target="_blank"
-                                    class="group relative w-full flex items-center gap-1.5 font-medium text-sm before:absolute before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none dark:focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) flex-row px-2.5 py-1.5 before:inset-y-px before:inset-x-0 text-(--ui-text-muted) hover:text-(--ui-text-highlighted) hover:before:bg-(--ui-bg-elevated)/50 transition-colors before:transition-colors"
-                                    data-reka-collection-item=""><span
-                                        class="iconify i-lucide:info shrink-0 size-5 text-(--ui-text-dimmed) group-hover:text-(--ui-text) transition-colors"
-                                        aria-hidden="true"></span><span class="truncate">Help &amp; Support<span
-                                            class="iconify i-lucide:arrow-up-right inline-block size-3 align-top text-(--ui-text-dimmed)"
-                                            aria-hidden="true"></span></span><!----></a><!----></li>
-                        </ul>
-                    </div><!----><!---->
-                </nav>
+    <transition name="fade">
+        <div v-if="NavStore.NavIsOpen" class="fixed inset-0 bg-black/75 z-40 lg:hidden"
+            @click="NavStore.NavIsOpen = false" aria-hidden="true" role="presentation" />
+    </transition>
+    <transition name="slide">
+        <div v-if="NavStore.NavIsOpen" ref="NavBarFull"
+            class="fixed bg-white divide-y divide-gray-200 shadow-lg flex flex-col left-0 inset-y-0 w-full max-w-md z-50 lg:hidden"
+            @click.stop>
+            <div class="h-16 shrink-0 flex items-center gap-3 px-6">
+                <button type="button" aria-label="Close sidebar" class="rounded-lg p-1.5 hover:bg-gray-100"
+                    @click="NavStore.NavIsOpen = false">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
+                        viewBox="0 0 24 24"><!-- Icon from Material Line Icons by Vjacheslav Trushkin - https://github.com/cyberalien/line-md/blob/master/license.txt -->
+                        <g fill="none" stroke="currentColor" stroke-dasharray="16" stroke-dashoffset="16"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="M7 7l10 10">
+                                <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="16;0" />
+                            </path>
+                            <path d="M17 7l-10 10">
+                                <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.4s" dur="0.4s"
+                                    values="16;0" />
+                            </path>
+                        </g>
+                    </svg>
+                </button>
+                <button type="button" class="flex items-center gap-2 w-full py-2 hover:bg-gray-100 rounded-lg px-2">
+                    <img src="D:\Dashboard\public\favicon.ico" class="h-5 w-5 rounded-full">
+                    <span class="truncate capitalize">hilex dashboard</span>
+                </button>
             </div>
-            <div class="shrink-0 flex items-center gap-1.5 px-4 py-2 sm:px-6 lg:border-t lg:border-(--ui-border)">
-                <button type="button" name="Benjamin Canac" id="reka-dropdown-menu-trigger-v-0-22" aria-haspopup="menu"
-                    aria-expanded="false" data-state="closed"
-                    class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 w-full justify-center text-(--ui-text) hover:bg-(--ui-bg-elevated) focus:outline-none focus-visible:bg-(--ui-bg-elevated) hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent data-[state=open]:bg-(--ui-bg-elevated)"><span
-                        class="inline-flex items-center justify-center select-none overflow-hidden rounded-full align-middle bg-(--ui-bg-elevated) size-5 text-[10px] shrink-0"><img
-                            role="img" src="https://github.com/benjamincanac.png" alt="Benjamin Canac" width="20"
-                            height="20" class="h-full w-full rounded-[inherit] object-cover"></span><span
-                        class="truncate">Benjamin Canac</span><span
-                        class="iconify i-lucide:chevrons-up-down shrink-0 size-5 ms-auto text-(--ui-text-dimmed)"
-                        aria-hidden="true"></span></button><!----></div>
-        </div>
 
-    </div>
+            <div class="flex flex-col gap-4 flex-1 overflow-y-auto px-6 py-4">
+                <button type="button"
+                    class="flex items-center gap-3 px-3 py-2 text-sm cursor-pointer rounded-lg border border-gray-200 hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
+                        viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined -->
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="m14 14l2.5 2.5m-.067 2.025a1.48 1.48 0 1 1 2.092-2.092l3.042 3.042a1.48 1.48 0 1 1-2.092 2.092zM16 9A7 7 0 1 0 2 9a7 7 0 0 0 14 0"
+                            color="currentColor" />
+                    </svg>
+                    <span class="truncate">Search...</span>
+                    <div class="hidden lg:flex items-center gap-1 ms-auto">
+                        <kbd class="px-1 rounded text-xs border border-gray-300 bg-gray-100 h-5">⊞</kbd>
+                        <kbd class="px-1 rounded text-xs border border-gray-300 bg-gray-100 h-5">K</kbd>
+                    </div>
+                </button>
+
+                <nav aria-label="Main" class="flex flex-col gap-1">
+                    <a href="/"
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-blue-600 bg-blue-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M15 20v-7h7v7zm-4-9V4h11v7zm-9 9v-7h11v7zm0-9V4h7v7z" />
+                        </svg>
+                        <span class="truncate capitalize">dashboard</span>
+                    </a>
+
+                    <a href="/inbox"
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
+                            <g fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path
+                                    d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" />
+                                <path stroke-linecap="round"
+                                    d="M2 13h3.16c.905 0 1.358 0 1.756.183s.692.527 1.281 1.214l.606.706c.589.687.883 1.031 1.281 1.214s.85.183 1.756.183h.32c.905 0 1.358 0 1.756-.183s.692-.527 1.281-1.214l.606-.706c.589-.687.883-1.031 1.281-1.214S17.934 13 18.84 13H22" />
+                            </g>
+                        </svg>
+                        <span class="truncate capitalize">Inbox</span>
+                        <span class="ms-auto text-xs px-1.5 py-0.5 rounded border border-gray-200 bg-white">4</span>
+                    </a>
+
+                    <a href="/customers"
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 14 14">
+                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9.284 3.503a1.621 1.621 0 1 0 3.242 0a1.621 1.621 0 1 0-3.242 0" />
+                                <path
+                                    d="M8.473 8.367v-.81a2.432 2.432 0 0 1 4.865 0v.81M6.6 8.369h6.738M3.604 5.612a1.712 1.712 0 1 0 0-3.425a1.712 1.712 0 0 0 0 3.425" />
+                                <path
+                                    d="M6.6 8.609a2.996 2.996 0 1 0-5.993 0v1.284h1.285l.428 3.424h2.568l.428-3.424H6.6z" />
+                            </g>
+                        </svg>
+                        <span class="truncate capitalize">Customers</span>
+                    </a>
+                    <a href="/customers"
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 48 48">
+                            <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
+                                <path d="M44 14L24 4L4 14v20l20 10l20-10z" />
+                                <path stroke-linecap="round" d="m4 14l20 10m0 20V24m20-10L24 24M34 9L14 19" />
+                            </g>
+                        </svg>
+                        <span class="truncate capitalize">Products</span>
+                    </a>
+
+                    <a href="/customers"
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
+                            viewBox="0 0 24 24"><!-- Icon from IconaMoon by Dariush Habibpour - https://creativecommons.org/licenses/by/4.0/ -->
+                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2">
+                                <circle cx="17" cy="7" r="3" />
+                                <circle cx="7" cy="17" r="3" />
+                                <path
+                                    d="M14 14h6v5a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zM4 4h6v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" />
+                            </g>
+                        </svg>
+                        <span class="truncate capitalize">categories</span>
+                    </a>
+                    <a href="/customers"
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M4 18V7.1L2.45 3.75q-.175-.375-.025-.763t.525-.562t.763-.037t.562.512L6.2 7.05h11.6l1.925-4.15q.175-.375.563-.525t.762.05q.375.175.525.563t-.025.762L20 7.1V18q0 .825-.587 1.413T18 20H6q-.825 0-1.412-.587T4 18m6-5h4q.425 0 .713-.288T15 12t-.288-.712T14 11h-4q-.425 0-.712.288T9 12t.288.713T10 13" />
+                        </svg>
+                        <span class="truncate capitalize">Orders</span>
+                    </a>
+                    <a href="/customers"
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
+                            viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined -->
+                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="1.5" color="currentColor">
+                                <path
+                                    d="M7 18v-2m5 2v-3m5 3v-5M2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12" />
+                                <path
+                                    d="M5.992 11.486c2.155.072 7.042-.253 9.822-4.665m-1.822-.533l1.876-.302c.228-.029.564.152.647.367l.495 1.638" />
+                            </g>
+                        </svg>
+                        <span class="truncate capitalize">Analytics</span>
+                    </a>
+                </nav>
+
+
+            </div>
+
+            <div class="shrink-0  px-6 py-3 border-t border-gray-200">
+                <nuxtLink :to="{ name: 'Profile' }" type="button"
+                    class="cursor-pointer duration-300 flex items-center gap-3 w-full px-3 py-1.5 rounded-lg hover:bg-gray-100">
+                    <img src="https://github.com/benjamincanac.png" alt="Benjamin Canac" class="h-5 w-5 rounded-full">
+                    <span class="truncate">Benjamin Canac</span>
+                    <span class="iconify i-lucide:chevrons-up-down shrink-0 size-5 ms-auto text-gray-400"></span>
+                </nuxtLink>
+            </div>
+        </div>
+    </transition>
 </template>
 
 <script setup lang="ts">
-const NavStore = useNavStore()
-</script>
+import { onClickOutside, useMediaQuery } from '@vueuse/core'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 
-<style scoped></style>
+const NavStore = useNavStore()
+const route = useRoute()
+const NavBarFull = ref<HTMLElement | null>(null)
+
+const isMobile = computed(() => window.innerWidth < 1024)
+
+const handleKeydown = (e: KeyboardEvent) => {
+    if (NavStore.NavIsOpen && e.key === 'Escape') {
+        NavStore.NavIsOpen = false
+    }
+}
+
+onMounted(() => {
+    window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeydown)
+})
+
+onClickOutside(NavBarFull, () => {
+    if (isMobile.value) {
+        NavStore.NavIsOpen = false
+    }
+})
+</script>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+    transition: transform 0.3s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+    transform: translateX(-100%);
+}
+</style>

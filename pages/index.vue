@@ -1,6 +1,6 @@
 <template>
     <mainLayout>
-        <h1>Home</h1>
+        <cards />
         <notification />
     </mainLayout>
 </template>
