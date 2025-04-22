@@ -3,6 +3,8 @@
   
   " class=" w-full h-full  bg-white">
     <MainLoader />
-    <nuxtPage/>
+    <nuxtPage />
+    <notification />
+
   </div>
 </template>

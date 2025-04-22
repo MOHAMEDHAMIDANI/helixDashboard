@@ -12,7 +12,7 @@
                     @click="NavStore.NavIsOpen = false">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
                         viewBox="0 0 24 24"><!-- Icon from Material Line Icons by Vjacheslav Trushkin - https://github.com/cyberalien/line-md/blob/master/license.txt -->
-                        <g fill="none" stroke="currentColor" stroke-dasharray="16" stroke-dashoffset="16"
+                      <g fill="none" stroke="currentColor" stroke-dasharray="16" stroke-dashoffset="16"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                             <path d="M7 7l10 10">
                                 <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="16;0" />
@@ -48,15 +48,15 @@
                 </button>
 
                 <nav aria-label="Main" class="flex flex-col gap-1">
-                    <a href="/"
+                    <nuxtLink :to="{ name: 'index' }"
                         class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-blue-600 bg-blue-50">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M15 20v-7h7v7zm-4-9V4h11v7zm-9 9v-7h11v7zm0-9V4h7v7z" />
                         </svg>
                         <span class="truncate capitalize">dashboard</span>
-                    </a>
+                    </nuxtLink>
 
-                    <a href="/inbox"
+                    <nuxtLink :to="{ name: 'Inbox' }"
                         class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
                             <g fill="none" stroke="currentColor" stroke-width="1.5">
@@ -68,22 +68,8 @@
                         </svg>
                         <span class="truncate capitalize">Inbox</span>
                         <span class="ms-auto text-xs px-1.5 py-0.5 rounded border border-gray-200 bg-white">4</span>
-                    </a>
-
-                    <a href="/customers"
-                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 14 14">
-                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M9.284 3.503a1.621 1.621 0 1 0 3.242 0a1.621 1.621 0 1 0-3.242 0" />
-                                <path
-                                    d="M8.473 8.367v-.81a2.432 2.432 0 0 1 4.865 0v.81M6.6 8.369h6.738M3.604 5.612a1.712 1.712 0 1 0 0-3.425a1.712 1.712 0 0 0 0 3.425" />
-                                <path
-                                    d="M6.6 8.609a2.996 2.996 0 1 0-5.993 0v1.284h1.285l.428 3.424h2.568l.428-3.424H6.6z" />
-                            </g>
-                        </svg>
-                        <span class="truncate capitalize">Customers</span>
-                    </a>
-                    <a href="/customers"
+                    </nuxtLink>
+                    <nuxtLink :to="{ name: 'Product' }"
                         class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 48 48">
                             <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
@@ -92,31 +78,16 @@
                             </g>
                         </svg>
                         <span class="truncate capitalize">Products</span>
-                    </a>
-
-                    <a href="/customers"
-                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
-                            viewBox="0 0 24 24"><!-- Icon from IconaMoon by Dariush Habibpour - https://creativecommons.org/licenses/by/4.0/ -->
-                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2">
-                                <circle cx="17" cy="7" r="3" />
-                                <circle cx="7" cy="17" r="3" />
-                                <path
-                                    d="M14 14h6v5a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zM4 4h6v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" />
-                            </g>
-                        </svg>
-                        <span class="truncate capitalize">categories</span>
-                    </a>
-                    <a href="/customers"
+                    </nuxtLink>
+                    <nuxtLink :to="{ name: 'Orders' }"
                         class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                 d="M4 18V7.1L2.45 3.75q-.175-.375-.025-.763t.525-.562t.763-.037t.562.512L6.2 7.05h11.6l1.925-4.15q.175-.375.563-.525t.762.05q.375.175.525.563t-.025.762L20 7.1V18q0 .825-.587 1.413T18 20H6q-.825 0-1.412-.587T4 18m6-5h4q.425 0 .713-.288T15 12t-.288-.712T14 11h-4q-.425 0-.712.288T9 12t.288.713T10 13" />
                         </svg>
                         <span class="truncate capitalize">Orders</span>
-                    </a>
-                    <a href="/customers"
+                    </nuxtLink>
+                    <nuxtLink :to="{ name: 'Profile' }"
                         class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
                             viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined -->
@@ -129,7 +100,7 @@
                             </g>
                         </svg>
                         <span class="truncate capitalize">Analytics</span>
-                    </a>
+                    </nuxtLink>
                 </nav>
 
 

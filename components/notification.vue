@@ -1,11 +1,9 @@
 <template>
-  <!-- Overlay with transition -->
   <transition enter-active-class="transition-opacity ease-out duration-200" enter-from-class="opacity-0"
     enter-to-class="opacity-100" leave-active-class="transition-opacity ease-in duration-150"
     leave-from-class="opacity-100" leave-to-class="opacity-0">
     <div v-if="notificationStore.NotificationIsOpen" class="fixed inset-0 bg-black/50 z-40"
       @click.self="notificationStore.NotificationIsOpen = false">
-      <!-- Notifications panel with slide transition -->
       <transition enter-active-class="transform transition ease-out duration-200" enter-from-class="translate-x-full"
         enter-to-class="translate-x-0" leave-active-class="transform transition ease-in duration-150"
         leave-from-class="translate-x-0" leave-to-class="translate-x-full">
@@ -19,7 +17,18 @@
             <button type="button"
               class="p-1.5 rounded-full hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
               @click="notificationStore.NotificationIsOpen = false" aria-label="Close notifications">
-              <span class="iconify i-lucide:x size-5"></span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="none"
+                viewBox="0 0 24 24"><!-- Icon from Material Line Icons by Vjacheslav Trushkin - https://github.com/cyberalien/line-md/blob/master/license.txt -->
+                <g fill="none" stroke="currentColor" stroke-dasharray="16" stroke-dashoffset="16" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2">
+                  <path d="M7 7l10 10">
+                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="16;0" />
+                  </path>
+                  <path d="M17 7l-10 10">
+                    <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.4s" dur="0.4s" values="16;0" />
+                  </path>
+                </g>
+              </svg>
             </button>
           </div>
 

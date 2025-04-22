@@ -64,7 +64,7 @@
                                 <span>New product</span>
                             </nuxtLink>
 
-                            <nuxtLink :to="{ name: 'User' }"
+                            <nuxtLink :to="{ name: 'Users' }"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 role="menuitem">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500"

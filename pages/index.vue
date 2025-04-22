@@ -4,7 +4,6 @@
         <div >
             <SalesDashboard  />
         </div>
-        <notification />
     </mainLayout>
 </template>
 
