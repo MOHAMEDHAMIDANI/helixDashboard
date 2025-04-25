@@ -10,9 +10,8 @@
             <div class="h-16 shrink-0 flex items-center gap-3 px-6">
                 <button type="button" aria-label="Close sidebar" class="rounded-lg p-1.5 hover:bg-gray-100"
                     @click="NavStore.NavIsOpen = false">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
-                        viewBox="0 0 24 24"><!-- Icon from Material Line Icons by Vjacheslav Trushkin - https://github.com/cyberalien/line-md/blob/master/license.txt -->
-                      <g fill="none" stroke="currentColor" stroke-dasharray="16" stroke-dashoffset="16"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
+                        <g fill="none" stroke="currentColor" stroke-dasharray="16" stroke-dashoffset="16"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                             <path d="M7 7l10 10">
                                 <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="16;0" />
@@ -24,10 +23,22 @@
                         </g>
                     </svg>
                 </button>
-                <button type="button" class="flex items-center gap-2 w-full py-2 hover:bg-gray-100 rounded-lg px-2">
-                    <img src="D:\Dashboard\public\favicon.ico" class="h-5 w-5 rounded-full">
-                    <span class="truncate capitalize">hilex dashboard</span>
-                </button>
+
+                <!-- Mobile Logo with Gradient -->
+                <div class="flex items-center gap-2 w-full py-2">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6">
+                        <defs>
+                            <linearGradient id="mobileGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#4F46E5" />
+                                <stop offset="100%" stop-color="#06B6D4" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span
+                        class="text-lg font-semibold truncate capitalize bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">
+                        Hilex Dashboard
+                    </span>
+                </div>
             </div>
 
             <div class="flex flex-col gap-4 flex-1 overflow-y-auto px-6 py-4">

@@ -3,12 +3,44 @@
         'duration-300 ease-in-out lg:flex hidden flex-col min-h-svh shrink-0 border-r border-gray-200 bg-white',
         NavStore.NavIsOpen ? 'w-64' : 'w-16'
     ]">
-        <div class="h-16 shrink-0 flex items-center justify-center px-2 border-b border-gray-200">
+    <div class="shrink-0 flex items-center justify-center px-2 border-b border-gray-200 h-16">
             <button type="button"
                 class="p-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center w-full"
                 @click="NavStore.toggleNav">
-                <img src="/public/favicon.ico" class="h-8 w-8 rounded-full">
-                <span v-if="NavStore.NavIsOpen" class="font-semibold text-gray-800 ml-2">hilex dashboard</span>
+                
+                <!-- Collapsed State (Icon Only) -->
+                <svg v-if="!NavStore.NavIsOpen" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
+                     class="h-8 w-8">
+                    <defs>
+                        <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#4F46E5"/>
+                            <stop offset="100%" stop-color="#06B6D4"/>
+                        </linearGradient>
+                    </defs>
+                    <text x="50%" y="60%" 
+                          font-family="'Inter', sans-serif"
+                          font-size="20" 
+                          font-weight="700"
+                          text-anchor="middle"
+                          fill="url(#iconGradient)">H</text>
+                </svg>
+                
+                <!-- Expanded State (Full Logo) -->
+                <svg v-else viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="w-full h-8">
+                    <defs>
+                        <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#4F46E5"/>
+                            <stop offset="50%" stop-color="#2563EB"/>
+                            <stop offset="100%" stop-color="#06B6D4"/>
+                        </linearGradient>
+                    </defs>
+                    <text x="0" y="45" 
+                          font-family="'Inter', sans-serif" 
+                          font-size="36" 
+                          font-weight="700"
+                          fill="url(#textGradient)">Hilex Dashboard</text>
+                </svg>
             </button>
         </div>
 
@@ -90,14 +122,14 @@
         </div>
 
         <div class="shrink-0 flex items-center p-2 border-t border-gray-200">
-            <button type="button" class="flex items-center p-1 rounded-lg hover:bg-gray-100 transition-colors w-full"
+            <nuxtLink :to="{ name: 'Profile' }"  type="button" class="flex items-center p-1 rounded-lg hover:bg-gray-100 transition-colors w-full"
                 :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'">
                 <img src="https://github.com/benjamincanac.png" alt="Benjamin Canac" class="h-8 w-8 rounded-full">
                 <div v-if="NavStore.NavIsOpen" class="text-left ml-3">
                     <p class="text-sm font-medium text-gray-800">Benjamin Canac</p>
                     <p class="text-xs text-gray-500">Admin</p>
                 </div>
-            </button>
+            </nuxtLink>
         </div>
     </div>
 </template>
