@@ -45,10 +45,8 @@ export const useAuthStore = defineStore('auth', {
                     password: credentials.password
                 });
                 this.setTokens();
-                console.log(response);
-                console.log(this.access_token);
-                console.log(this.refresh_token);
-                
+                this.user = await response.data;
+                router.push('/');
             } catch (err: any) {
                 this.error = err.response?.data?.message || 'Login failed';
                 throw err;
@@ -87,40 +85,32 @@ export const useAuthStore = defineStore('auth', {
         async logout() {
             const router = useRouter();
             try {
-                await $fetch('/auth/logout',
-                    {
-                        method: 'POST'
-                    }
-                );
+                const { $axios } = useNuxtApp()
+                const response = await $axios.post('/authentication/logout');
+                console.log(response);
             } finally {
-                const accessToken = useCookie('access_token');
-                const refreshToken = useCookie('refresh_token');
-
-                accessToken.value = null;
-                refreshToken.value = null;
-
-                this.$reset();
-                router.push('/login');
-            }
-        },
+                    this.$reset();
+                    router.push('/login');
+                }
+            },
 
         async changePassword(passwords: {
-            current_password: string;
-            new_password: string;
-        }) {
-            this.loading = true;
-            this.error = null;
-            try {
-                await $fetch('/auth/change-password', {
-                    method: 'POST',
-                    body: passwords
-                });
-            } catch (err: any) {
-                this.error = err.response?.data?.message || 'Password change failed';
-                throw err;
-            } finally {
-                this.loading = false;
+                current_password: string;
+                new_password: string;
+            }) {
+                this.loading = true;
+                this.error = null;
+                try {
+                    await $fetch('/auth/change-password', {
+                        method: 'POST',
+                        body: passwords
+                    });
+                } catch (err: any) {
+                    this.error = err.response?.data?.message || 'Password change failed';
+                    throw err;
+                } finally {
+                    this.loading = false;
+                }
             }
         }
-    }
-});
+    });

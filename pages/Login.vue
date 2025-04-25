@@ -124,8 +124,7 @@ const handleLogin = () => {
         if (email.value && password.value) {
             try {
                 const authStore = useAuthStore()
-                const response = authStore.login({ email: email.value, password: password.value })
-                navigateTo('/')
+                authStore.login({ email: email.value, password: password.value })
             } catch (error) {
                 console.log(error)
             }

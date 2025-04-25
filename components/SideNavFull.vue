@@ -120,9 +120,8 @@
             <div class="shrink-0  px-6 py-3 border-t border-gray-200">
                 <nuxtLink :to="{ name: 'Profile' }" type="button"
                     class="cursor-pointer duration-300 flex items-center gap-3 w-full px-3 py-1.5 rounded-lg hover:bg-gray-100">
-                    <img src="https://github.com/benjamincanac.png" alt="Benjamin Canac" class="h-5 w-5 rounded-full">
-                    <span class="truncate">Benjamin Canac</span>
-                    <span class="iconify i-lucide:chevrons-up-down shrink-0 size-5 ms-auto text-gray-400"></span>
+                    <img :src="authStore.user?.avatar" alt="Profile" class="h-5 w-5 rounded-full">
+                    <span class="truncate">{{ authStore.user?.firstName + ' ' + authStore.user?.familyName }}</span>
                 </nuxtLink>
             </div>
         </div>
@@ -135,6 +134,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const NavStore = useNavStore()
+const authStore = useAuthStore()
 const route = useRoute()
 const NavBarFull = ref<HTMLElement | null>(null)
 

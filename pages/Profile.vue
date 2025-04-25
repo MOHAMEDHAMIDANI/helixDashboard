@@ -17,8 +17,8 @@
                         <input type="file" ref="fileInput" @change="handleAvatarChange" accept="image/*" class="hidden">
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ user?.name }}</h1>
-                        <p class="text-gray-500 dark:text-gray-400">{{ user.role }}</p>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ authStore.user?.firstName + ' ' + authStore.user?.familyName }}</h1>
+                        <p class="text-gray-500 dark:text-gray-400">{{ authStore.user?.role }}</p>
                     </div>
                 </div>
                 <button @click="toggleEditMode"
@@ -39,26 +39,24 @@
                             <p class="text-sm text-gray-500 dark:text-gray-400">Full Name</p>
                             <input v-if="editMode" v-model="editableUser.name"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md">
-                            <p v-else class="text-gray-900 dark:text-white">{{ user.name }}</p>
+                            <p v-else class="text-gray-900 dark:text-white">{{ authStore.user?.firstName + ' ' + authStore.user?.familyName }}</p>
                         </div>
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
                             <input v-if="editMode" v-model="editableUser.email" type="email"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md">
-                            <p v-else class="text-gray-900 dark:text-white">{{ user.email }}</p>
+                            <p v-else class="text-gray-900 dark:text-white">{{ authStore.user?.email }}</p>
                         </div>
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Phone</p>
                             <input v-if="editMode" v-model="editableUser.phone" type="tel"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md">
-                            <p v-else class="text-gray-900 dark:text-white">{{ user.phone }}</p>
+                            <p v-else class="text-gray-900 dark:text-white">{{ authStore.user?.phoneNumber }}</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Change Password Card -->
                 <div
                     class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Change Password</h2>
@@ -101,8 +99,6 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Danger Zone Card -->
                 <div
                     class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-red-200 dark:border-red-900/50 p-6">
                     <h2 class="text-lg font-medium text-red-700 dark:text-red-400 mb-4">Danger Zone</h2>
@@ -113,12 +109,11 @@
                                 <p class="text-sm font-medium text-gray-900 dark:text-white">Logout</p>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">Sign out of your account</p>
                             </div>
-                            <button @click="logout"
-                                class="px-3 py-1.5 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-md border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <div @click="logout()"
+                                class="px-3 cursor-pointer py-1.5 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-md border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700">
                                 Log Out
-                            </button>
+                            </div>
                         </div>
-
                         <div class="flex justify-between items-center">
                             <div>
                                 <p class="text-sm font-medium text-gray-900 dark:text-white">Delete account</p>
@@ -133,8 +128,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Delete Confirmation Modal -->
             <div v-if="showDeleteModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-md w-full mx-4">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Delete Account</h3>
@@ -161,7 +154,7 @@
 import MainLayout from '~/layouts/mainLayout.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+const authStore = useAuthStore()
 const router = useRouter();
 const fileInput = ref<HTMLInputElement | null>(null);
 const editMode = ref(false);
@@ -188,9 +181,7 @@ const password = ref({
 
 const toggleEditMode = () => {
     if (editMode.value) {
-        // Save changes
         user.value = { ...editableUser.value };
-        // Here you would typically call an API to save the changes
         console.log('Saved changes:', user.value);
     }
     editMode.value = !editMode.value;
@@ -207,7 +198,6 @@ const handleAvatarChange = (event: Event) => {
         reader.onload = (e) => {
             if (e.target?.result) {
                 user.value.avatar = e.target.result as string;
-                // Here you would upload the image to your server
                 console.log('New avatar:', user.value.avatar);
             }
         };
@@ -216,16 +206,13 @@ const handleAvatarChange = (event: Event) => {
 };
 
 const changePassword = () => {
-    // Here you would call an API to change the password
     console.log('Changing password:', password.value);
     alert('Password changed successfully!');
     password.value = { current: '', new: '' };
 };
 
 const logout = () => {
-    // Here you would call your logout API
-    console.log('Logging out');
-    router.push('/login');
+    authStore.logout();
 };
 
 const confirmDeleteAccount = () => {
