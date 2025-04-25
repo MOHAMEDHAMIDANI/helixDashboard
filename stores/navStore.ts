@@ -1,6 +1,6 @@
 export const useNavStore = defineStore('Nav', {
     state: () => ({
-        NavIsOpen : true,
+        NavIsOpen : false,
     }),
     getters: {
         

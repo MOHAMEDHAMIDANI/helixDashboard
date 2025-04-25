@@ -26,47 +26,29 @@ export const useAuthStore = defineStore('auth', {
     },
 
     actions: {
-        async setTokens() {
-            const accessToken = useCookie('access_token');
-            const refreshToken = useCookie('refresh_token');
-            this.access_token = accessToken.value || null;
-            this.refresh_token = refreshToken.value || null;
+        setTokens() {
+            const accessTokenCookie = useCookie('access_token');
+            const refreshTokenCookie = useCookie('refresh_token');
+            this.access_token = accessTokenCookie.value || null;
+            this.refresh_token = refreshTokenCookie.value || null;
         },
 
         async login(credentials: { email: string; password: string }) {
             const router = useRouter();
-
             this.loading = true;
             this.error = null;
 
             try {
-                const response = await $fetch('/auth/login', {
-                    method: 'POST',
-                    body: credentials,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                const { $axios } = useNuxtApp()
+                const response = await $axios.post('/authentication/login', {
+                    email: credentials.email,
+                    password: credentials.password
                 });
-
-                const accessToken = useCookie('access_token', {
-                    maxAge: 60 * 15,
-                    sameSite: 'strict',
-                    secure: true
-                });
-
-                const refreshToken = useCookie('refresh_token', {
-                    maxAge: 60 * 60 * 24 * 7,
-                    sameSite: 'strict',
-                    secure: true
-                });
-
-                this.access_token = accessToken.value;
-                this.refresh_token = refreshToken.value;
-
-                await this.setTokens();
-                await this.fetchUser();
-
-                router.push('/dashboard');
+                this.setTokens();
+                console.log(response);
+                console.log(this.access_token);
+                console.log(this.refresh_token);
+                
             } catch (err: any) {
                 this.error = err.response?.data?.message || 'Login failed';
                 throw err;
@@ -75,42 +57,32 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        async fetchUser() {
-            try {
-                const response = await $fetch('/auth/me', {
-                    method: 'GET'
-                });
-                this.user = response.data;
-            } catch (err) {
-                await this.logout();
-                throw err;
-            }
-        },
 
-        async refreshToken() {
-            const refreshToken = useCookie('refresh_token');
-            try {
-                if (!refreshToken.value) {
-                    throw new Error('No refresh token available');
-                }
 
-                const response = await $fetch('/auth/refresh', {
-                    method: 'POST',
-                    body: {
-                        refresh_token: refreshToken.value
-                    }
-                });
+        // async refreshToken() {
+        //     const refreshToken = useCookie('refresh_token');
+        //     try {
+        //         if (!refreshToken.value) {
+        //             throw new Error('No refresh token available');
+        //         }
 
-                const accessToken = useCookie('access_token');
-                accessToken.value = response.data.access_token;
+        //         const response = await $fetch('/auth/refresh', {
+        //             method: 'POST',
+        //             body: {
+        //                 refresh_token: refreshToken.value
+        //             }
+        //         });
 
-                await this.setTokens();
-                return response.data.access_token;
-            } catch (err) {
-                await this.logout();
-                throw err;
-            }
-        },
+        //         const accessToken = useCookie('access_token');
+        //         accessToken.value = response.data.access_token;
+
+        //         await this.setTokens();
+        //         return response.data.access_token;
+        //     } catch (err) {
+        //         await this.logout();
+        //         throw err;
+        //     }
+        // },
 
         async logout() {
             const router = useRouter();

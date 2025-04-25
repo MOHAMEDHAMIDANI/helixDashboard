@@ -123,10 +123,9 @@ const handleLogin = () => {
     setTimeout(() => {
         if (email.value && password.value) {
             try {
-                // const authStore = useAuthStore()
-                // const response = authStore.login({ email: email.value, password: password.value })
-                console.log(response)
-                router.push('/')
+                const authStore = useAuthStore()
+                const response = authStore.login({ email: email.value, password: password.value })
+                navigateTo('/')
             } catch (error) {
                 console.log(error)
             }

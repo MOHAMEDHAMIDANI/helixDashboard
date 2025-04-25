@@ -218,6 +218,11 @@ import {
     File as FileIcon,
     Plus as PlusIcon
 } from 'lucide-vue-next'
+definePageMeta({
+    middleware : [
+        
+    ]
+})
 const emails = ref([
     {
         id: 1,
