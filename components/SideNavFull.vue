@@ -101,7 +101,7 @@
                     <nuxtLink :to="{ name: 'Profile' }"
                         class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
-                            viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined -->
+                            viewBox="0 0 24 24">
                             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                 stroke-width="1.5" color="currentColor">
                                 <path
@@ -120,8 +120,8 @@
             <div class="shrink-0  px-6 py-3 border-t border-gray-200">
                 <nuxtLink :to="{ name: 'Profile' }" type="button"
                     class="cursor-pointer duration-300 flex items-center gap-3 w-full px-3 py-1.5 rounded-lg hover:bg-gray-100">
-                    <img :src="authStore.user?.avatar" alt="Profile" class="h-5 w-5 rounded-full">
-                    <span class="truncate">{{ authStore.user?.firstName + ' ' + authStore.user?.familyName }}</span>
+                    <img :src="'http://localhost:3000/uploads/Profile/' + authStore.user?.avatar" alt="Profile" class="h-5 w-5 rounded-full">
+                    <span class="truncate">{{ authStore.user?.fullName }}</span>
                 </nuxtLink>
             </div>
         </div>
@@ -130,9 +130,6 @@
 
 <script setup lang="ts">
 import { onClickOutside, useMediaQuery } from '@vueuse/core'
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRoute } from 'vue-router'
-
 const NavStore = useNavStore()
 const authStore = useAuthStore()
 const route = useRoute()

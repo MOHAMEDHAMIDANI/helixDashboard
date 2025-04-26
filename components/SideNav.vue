@@ -124,10 +124,9 @@
         <div class="shrink-0 flex items-center p-2 border-t border-gray-200">
             <nuxtLink :to="{ name: 'Profile' }"  type="button" class="flex items-center p-1 rounded-lg hover:bg-gray-100 transition-colors w-full"
                 :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'">
-                <img src="https://github.com/benjamincanac.png" alt="Benjamin Canac" class="h-8 w-8 rounded-full">
+                <img :src="'http://localhost:3000/uploads/Profile/' + authStore.user?.avatar" alt="Benjamin Canac" class="h-8 w-8 rounded-full">
                 <div v-if="NavStore.NavIsOpen" class="text-left ml-3">
-                    <p class="text-sm font-medium text-gray-800">{{ authStore.user?.firstName + ' ' + authStore.user?.familyName }}</p>
-                    <!-- <p class="text-xs text-gray-500">{{ authStore.user?.role }}</p> -->
+                    <p class="text-sm font-medium text-gray-800">{{ authStore.user?.fullName}}</p>
                 </div>
             </nuxtLink>
         </div>
@@ -136,4 +135,5 @@
 
 <script setup lang="ts">
 const NavStore = useNavStore()
+const authStore = useAuthStore()
 </script>

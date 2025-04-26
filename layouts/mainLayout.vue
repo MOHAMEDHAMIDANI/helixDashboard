@@ -17,8 +17,6 @@
 import NavBar from '~/components/NavBar.vue';
 import SideNav from '~/components/SideNav.vue';
 import SideNavFull from '~/components/SideNavFull.vue';
-
-
 </script>
 
 <style scoped></style>

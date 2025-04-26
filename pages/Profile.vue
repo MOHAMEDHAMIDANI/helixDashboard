@@ -5,7 +5,7 @@
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
                     <div class="relative">
-                        <img :src="user.avatar" alt="Profile" class="w-16 h-16 rounded-full">
+                        <img :src="'http://localhost:3000/uploads/Profile/' + authStore.user?.avatar" alt="Profile" class="w-16 h-16 rounded-full">
                         <button @click="triggerFileInput"
                             class="absolute bottom-0 right-0 p-1.5 bg-white dark:bg-gray-800 rounded-full border border-gray-200 dark:border-gray-700 shadow-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600 dark:text-gray-400"
@@ -17,19 +17,19 @@
                         <input type="file" ref="fileInput" @change="handleAvatarChange" accept="image/*" class="hidden">
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ authStore.user?.firstName + ' ' + authStore.user?.familyName }}</h1>
-                        <p class="text-gray-500 dark:text-gray-400">{{ authStore.user?.role }}</p>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ authStore.user?.fullName }}</h1>
                     </div>
                 </div>
-                <button @click="toggleEditMode"
+                <button v-if="!editMode" @click="toggleEditMode"
                     class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
-                    {{ editMode ? 'Save Changes' : 'Edit Profile' }}
+                    Edit information
+                </button>
+                <button v-else @click="saveChanges"
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    Save Changes
                 </button>
             </div>
-
-            <!-- Main Content -->
             <div class="grid grid-cols-1 gap-6">
-                <!-- Personal Info Card -->
                 <div
                     class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Personal Information</h2>
@@ -37,9 +37,9 @@
                     <div class="space-y-4">
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Full Name</p>
-                            <input v-if="editMode" v-model="editableUser.name"
+                            <input v-if="editMode" v-model="editableUser.fullName"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md">
-                            <p v-else class="text-gray-900 dark:text-white">{{ authStore.user?.firstName + ' ' + authStore.user?.familyName }}</p>
+                            <p v-else class="text-gray-900 dark:text-white">{{ authStore.user?.fullName }}</p>
                         </div>
 
                         <div>
@@ -51,7 +51,7 @@
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Phone</p>
-                            <input v-if="editMode" v-model="editableUser.phone" type="tel"
+                            <input v-if="editMode" v-model="editableUser.phoneNumber" type="tel"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md">
                             <p v-else class="text-gray-900 dark:text-white">{{ authStore.user?.phoneNumber }}</p>
                         </div>
@@ -92,7 +92,7 @@
                             </div>
                         </div>
 
-                        <button @click="changePassword"
+                        <button @click="changePassword()"
                             class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors mt-2"
                             :disabled="!password.current || !password.new">
                             Change Password
@@ -152,8 +152,7 @@
 
 <script setup lang="ts">
 import MainLayout from '~/layouts/mainLayout.vue';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import type { User } from '~/types';
 const authStore = useAuthStore()
 const router = useRouter();
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -162,52 +161,50 @@ const showDeleteModal = ref(false);
 const showCurrentPassword = ref(false);
 const showNewPassword = ref(false);
 
-const user = ref({
-    name: 'Benjamin Canac',
-    email: 'benjamin@example.com',
-    phone: '+1 (555) 123-4567',
-    role: 'Admin',
-    avatar: 'https://github.com/benjamincanac.png'
-});
 
-const editableUser = ref({
-    ...user.value
-});
 
+const editableUser = ref<User>({});
+onMounted(() => {
+    editableUser.value = authStore.user
+})
 const password = ref({
     current: '',
     new: ''
 });
 
 const toggleEditMode = () => {
-    if (editMode.value) {
-        user.value = { ...editableUser.value };
-        console.log('Saved changes:', user.value);
-    }
     editMode.value = !editMode.value;
 };
 
+const saveChanges = async () => {
+    await authStore.updateUser({ fullName: editableUser.value.fullName, email: editableUser.value.email, phoneNumber: editableUser.value.phoneNumber })
+    await authStore.GetUserFromToken()
+    editableUser.value = authStore.user
+    toggleEditMode()
+}
 const triggerFileInput = () => {
     fileInput.value?.click();
 };
 
-const handleAvatarChange = (event: Event) => {
+const handleAvatarChange = async (event: Event) => {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            if (e.target?.result) {
-                user.value.avatar = e.target.result as string;
-                console.log('New avatar:', user.value.avatar);
-            }
-        };
-        reader.readAsDataURL(input.files[0]);
+        const formData = new FormData()
+        formData.append('file', input.files[0])
+        await authStore.Upload(formData);
+        authStore.GetUserFromToken()
+        
     }
 };
 
-const changePassword = () => {
-    console.log('Changing password:', password.value);
-    alert('Password changed successfully!');
+const changePassword = async () => {
+    console.log('Changing password...');
+    if (!password.value.current || !password.value.new) {
+        alert('Please enter both current and new passwords.');
+        return;
+    }
+    const passwords = { current_password: password.value.current, new_password: password.value.new };
+    await authStore.changePassword(passwords)
     password.value = { current: '', new: '' };
 };
 
@@ -219,10 +216,10 @@ const confirmDeleteAccount = () => {
     showDeleteModal.value = true;
 };
 
-const deleteAccount = () => {
-    console.log('Account deleted');
+const deleteAccount = async () => {
+    console.log('deleting is in progress')
+    await authStore.deleteAccount()
     showDeleteModal.value = false;
-    router.push('/login');
 };
 </script>
 
