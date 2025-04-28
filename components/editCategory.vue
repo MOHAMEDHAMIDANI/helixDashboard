@@ -15,8 +15,10 @@
                     </label>
                     <select v-model="selectedCategory" id="category-select"
                         class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                        <option v-for="category in categories" :key="category.code" :value="category">
-                            {{ category.name }}
+                        <option :value="null" disabled>Select category</option>
+                        <option v-for="(category, index) in props.category" :key="category.id"
+                            :value="{ ...category, index: index }">
+                            {{ category.categoryName }}
                         </option>
                     </select>
                 </div>
@@ -53,27 +55,25 @@
 import { ref, watch } from 'vue'
 import { PencilIcon } from '@heroicons/vue/24/outline'
 import Modal from './Modal.vue'
+import type { Category } from '~/types'
 
-const props = defineProps({
-    isOpen: {
-        type: Boolean,
-        required: true
-    },
-    categories: {
-        type: Array as () => Array<{ code: string; name: string }>,
-        required: true
-    }
-})
+interface Props {
+    category: Category[],
+    isOpen: boolean
+}
+const props = defineProps<Props>()
+
 
 const emit = defineEmits(['close', 'submit'])
 
-const selectedCategory = ref<{ code: string; name: string } | null>(null)
+const selectedCategory = ref<{ id: string; categoryName: string, index: number } | null>(null)
 const newName = ref('')
 const error = ref('')
 
 watch(selectedCategory, (newVal) => {
+    console.log(newVal)
     if (newVal) {
-        newName.value = newVal.name
+        newName.value = newVal.categoryName
     }
 })
 
@@ -89,8 +89,9 @@ const handleSubmit = () => {
     }
 
     emit('submit', {
-        code: selectedCategory.value.code,
-        name: newName.value.trim()
+        id: selectedCategory.value.id,
+        name: newName.value.trim(),
+        index: selectedCategory.value.index
     })
 
     selectedCategory.value = null

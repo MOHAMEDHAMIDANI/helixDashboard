@@ -136,8 +136,8 @@ export const useAuthStore = defineStore('auth', {
                 throw err;
             }
         },
-        async Upload(file : FormData) {
-            const {$axios} = useNuxtApp()
+        async Upload(file: FormData) {
+            const { $axios } = useNuxtApp()
             try {
                 const response = await $axios.post('/authentication/uploadImage', file);
                 console.log(response);
@@ -145,7 +145,7 @@ export const useAuthStore = defineStore('auth', {
                 console.error(error)
             }
         },
-        async updateUser( updateDto : { fullName: string; email: string; phoneNumber: string }) {
+        async updateUser(updateDto: { fullName: string; email: string; phoneNumber: string }) {
             const { $axios } = useNuxtApp()
             try {
                 const response = await $axios.patch('/authentication/updateUser', updateDto);
@@ -154,6 +154,7 @@ export const useAuthStore = defineStore('auth', {
                 this.error = err.response?.data?.message || 'Account deletion failed';
                 throw err;
             }
-        }
+        },
+
     },
 });

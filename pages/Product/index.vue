@@ -66,7 +66,7 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ getCategoryName(product.category) }}</div>
+                                    <div class="text-sm text-gray-900">{{ product.category.categoryName }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ product.brand }}</div>
@@ -142,20 +142,15 @@
             </div>
 
             <!-- Modals -->
-            <AddProduct v-if="addProduct" @close="addProduct = false" @submit="handleAddProduct" />
+            <AddProduct v-if="addProduct" @close="addProduct = false" @submit="handleAddProduct" :category="categoryStore.categories" />
 
             <EditProduct v-if="editingProduct" :productData="editingProduct" @close="editingProduct = null"
                 @submit="handleUpdateProduct" />
 
-            <!-- Create Category Modal -->
             <CreateCategory v-if="showCreateCategory" :isOpen="showCreateCategory" @close="showCreateCategory = false"
                 @submit="handleCreateCategory" />
-
-            <!-- Edit Category Modal -->
-            <EditCategory v-if="showEditCategory" :isOpen="showEditCategory" :categories="categories"
+            <EditCategory v-if="showEditCategory" :isOpen="showEditCategory" :category="categoryStore.categories"
                 @close="showEditCategory = false" @submit="handleUpdateCategory" />
-
-            <!-- Delete Confirmation Modal -->
             <Modal :isOpen="showDeleteConfirm" @close="showDeleteConfirm = false">
                 <template #title>
                     <div class="flex items-center">
@@ -203,15 +198,13 @@ import CreateCategory from '~/components/createCategory.vue'
 import EditCategory from '~/components/editCategory.vue'
 
 
-// State
 const addProduct = ref(false)
 const showCreateCategory = ref(false)
 const showEditCategory = ref(false)
 const showDeleteConfirm = ref(false)
 const editingProduct = ref<Product | null>(null)
 const productToDelete = ref<string | null>(null)
-
-// Sample data
+const categoryStore = useCategoryStore()
 const products = ref<Product[]>([
     {
         id: '1',
@@ -268,23 +261,9 @@ const products = ref<Product[]>([
     }
 ])
 
-const categories = ref([
-    { code: 'TV', name: 'TV/Monitors' },
-    { code: 'PC', name: 'PC' },
-    { code: 'GA', name: 'Gaming/Console' },
-    { code: 'PH', name: 'Phones' }
+const categories = ref<Category[]>([
 ])
 
-// Computed
-const selectedCategory = computed(() => {
-    return categories.value.find(c => c.code === selectedCategoryCode.value)
-})
-
-// Methods
-const getCategoryName = (code: string) => {
-    const category = categories.value.find(c => c.code === code)
-    return category ? category.name : code
-}
 
 const openCreateCategoryModal = () => {
     showCreateCategory.value = true
@@ -361,19 +340,27 @@ const handleUpdateProduct = (formData: FormData) => {
     editingProduct.value = null
 }
 
-const handleCreateCategory = (categoryName: string) => {
-    const code = categoryName.substring(0, 2).toUpperCase()
-    categories.value.push({
-        code,
-        name: categoryName
-    })
-    showCreateCategory.value = false
+const handleCreateCategory = async (categoryName: string) => {
+    try {
+        console.log('Created category:', categoryName);
+        const newCategory : Category = await categoryStore.createCategory(categoryName);
+        categories.value.push(newCategory);
+        showCreateCategory.value = false;
+    } catch (error) {
+        console.error('Error creating category:', error);
+    }
 }
 
-const handleUpdateCategory = (updatedCategory: { code: string; name: string }) => {
-    const index = categories.value.findIndex(c => c.code === updatedCategory.code)
-    if (index !== -1) {
-        categories.value[index].name = updatedCategory.name
+const handleUpdateCategory = async (updatedCategory: { id: string; name: string , index : number}) => {
+    if (updatedCategory.index !== -1) {
+        try {
+            console.log('Updated category:', updatedCategory);
+            const newCategory = await categoryStore.updateCategory(updatedCategory.id, updatedCategory.name);
+            console.log('Updated category:', newCategory);
+
+        } catch (error) {
+            console.error('Error updating category:', error);
+        }
     }
     showEditCategory.value = false
 }
@@ -396,7 +383,7 @@ interface Product {
 }
 
 interface Category {
-    code: string
+    id: string
     name: string
 }
 </script>

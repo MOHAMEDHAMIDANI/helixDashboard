@@ -16,11 +16,8 @@
                     <span class="sr-only">Close modal</span>
                 </button>
             </div>
-
-            <!-- Modal body -->
             <form @submit.prevent="submitForm">
                 <div class="p-6 space-y-6">
-                    <!-- Basic Information -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Product Name</label>
@@ -34,10 +31,8 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 required>
                                 <option value="" disabled selected>Select category</option>
-                                <option value="TV">TV/Monitors</option>
-                                <option value="PC">PC</option>
-                                <option value="GA">Gaming/Console</option>
-                                <option value="PH">Phones</option>
+                                <option v-for="category in props.category" :value="category.id" :key="category.id">{{
+                                    category.categoryName }}</option>
                             </select>
                         </div>
                         <div>
@@ -86,10 +81,9 @@
                             <label class="block mb-2 text-sm font-medium text-gray-900">Colors</label>
                             <div class="flex flex-wrap gap-2">
                                 <div v-for="(color, index) in product.colors" :key="index" class="flex items-center">
-                                    <input v-model="color.value" type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 w-24"
-                                        placeholder="Color" required>
-                                    <input v-model="color.hex" type="color" class="w-6 h-6 ml-1 rounded cursor-pointer">
+
+                                    <input v-model="color.hex" type="color" class="w-6 h-6 ml-1 rounded cursor-pointer"
+                                        required>
                                     <button v-if="product.colors.length > 1" type="button" @click="removeColor(index)"
                                         class="ml-1 text-red-500 hover:text-red-700">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,8 +103,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Promotion Section -->
                     <div class="space-y-2">
                         <div class="flex items-center">
                             <input v-model="product.hasPromotion" id="promotion-checkbox" type="checkbox"
@@ -142,7 +134,7 @@
                             </div>
                             <div v-if="product.promoPrice" class="text-sm text-green-600">
                                 You're offering a {{ product.discount }}% discount (Save ${{ (product.price -
-                                product.promoPrice).toFixed(2) }})
+                                    product.promoPrice).toFixed(2) }})
                             </div>
                             <div>
                                 <label for="promo-end" class="block mb-1 text-sm font-medium text-gray-900">Promotion
@@ -186,8 +178,6 @@
                             </label>
                         </div>
                     </div>
-
-                    <!-- Description -->
                     <div>
                         <label for="description"
                             class="block mb-2 text-sm font-medium text-gray-900">Description</label>
@@ -196,8 +186,6 @@
                             placeholder="Write product description here"></textarea>
                     </div>
                 </div>
-
-                <!-- Form Actions -->
                 <div class="flex items-center justify-end p-6 space-x-3 border-t border-gray-200">
                     <button type="submit"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
@@ -214,11 +202,15 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import type { Category } from '~/types'
 
 const emit = defineEmits(['close', 'submit'])
-
+interface Props {
+    category: Category[]
+}
+const props = defineProps<Props>()
 const product = ref({
     name: '',
     category: '',
@@ -230,7 +222,7 @@ const product = ref({
     discount: 0,
     promoEndDate: '',
     sizes: [{ value: '' }],
-    colors: [{ value: '', hex: '#000000' }],
+    colors: [{ hex: '#000000' }],
     images: []
 })
 
@@ -265,18 +257,24 @@ const calculatePromoPrice = () => {
         product.value.promoPrice = (product.value.price * (1 - product.value.discount / 100)).toFixed(2)
     }
 }
-
+const formData = ref(new FormData())
 const handleImageUpload = (event) => {
     const files = event.target.files
+    formData.value = new FormData()
     for (let i = 0; i < files.length; i++) {
+        const file = files[i]
         const reader = new FileReader()
+
         reader.onload = (e) => {
             product.value.images.push({
-                file: files[i],
+                file: file,
                 preview: e.target.result
             })
+
+            formData.value.append('images', file) 
         }
-        reader.readAsDataURL(files[i])
+
+        reader.readAsDataURL(file)
     }
 }
 
@@ -285,19 +283,16 @@ const removeImage = (index) => {
 }
 
 const submitForm = () => {
-    // Validate required fields
     if (!product.value.name || !product.value.category || !product.value.brand || product.value.price <= 0) {
         alert('Please fill in all required fields')
         return
     }
 
-    // Validate sizes and colors
     if (product.value.sizes.some(size => !size.value) || product.value.colors.some(color => !color.value)) {
         alert('Please fill in all size and color fields')
         return
     }
 
-    // Validate promotion if enabled
     if (product.value.hasPromotion) {
         if (product.value.promoPrice <= 0 || product.value.discount <= 0 || !product.value.promoEndDate) {
             alert('Please fill in all promotion details')
@@ -305,7 +300,6 @@ const submitForm = () => {
         }
     }
 
-    // Prepare form data
     const formData = new FormData()
     formData.append('name', product.value.name)
     formData.append('category', product.value.category)
@@ -323,7 +317,6 @@ const submitForm = () => {
     formData.append('sizes', JSON.stringify(product.value.sizes))
     formData.append('colors', JSON.stringify(product.value.colors))
 
-    // Append images
     product.value.images.forEach((image, index) => {
         formData.append(`images[${index}]`, image.file)
     })
