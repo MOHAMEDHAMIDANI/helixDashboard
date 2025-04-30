@@ -4,31 +4,20 @@
             <div class="flex justify-center">
                 <svg class="w-full h-16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <defs>
-                        <!-- Primary gradient -->
                         <linearGradient id="hilexGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#4F46E5" /> <!-- Indigo-600 -->
-                            <stop offset="50%" stop-color="#2563EB" /> <!-- Blue-600 -->
-                            <stop offset="100%" stop-color="#06B6D4" /> <!-- Cyan-500 -->
+                            <stop offset="0%" stop-color="#4F46E5" /> 
+                            <stop offset="50%" stop-color="#2563EB" /> 
+                            <stop offset="100%" stop-color="#06B6D4" />
                         </linearGradient>
-
-                        <!-- Subtle gradient for dashboard text -->
                         <linearGradient id="dashboardGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#64748B" /> <!-- Slate-500 -->
-                            <stop offset="100%" stop-color="#94A3B8" /> <!-- Slate-400 -->
+                            <stop offset="0%" stop-color="#64748B" /> 
+                            <stop offset="100%" stop-color="#94A3B8" /> 
                         </linearGradient>
                     </defs>
-
-                    <!-- Modern H icon with gradient -->
-
-                    <!-- Connection dots -->
-
-                    <!-- Hilex Text -->
                     <text x="80" y="48" font-family="'Inter', sans-serif" font-size="34" font-weight="700"
                         letter-spacing="0.5px" fill="url(#hilexGradient)">
                         Hilex
                     </text>
-
-                    <!-- Dashboard Text -->
                     <text x="155" y="48" font-family="'Inter', sans-serif" font-size="34" font-weight="500"
                         letter-spacing="0.5px" fill="url(#dashboardGradient)" class="dark:fill-[#CBD5E1]">
                         Dashboard

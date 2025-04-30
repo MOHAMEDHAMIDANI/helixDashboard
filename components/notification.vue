@@ -9,7 +9,6 @@
         leave-from-class="translate-x-0" leave-to-class="translate-x-full">
         <div v-if="notificationStore.NotificationIsOpen" ref="notifications"
           class="fixed bg-white shadow-xl flex flex-col right-0 inset-y-0 w-full max-w-md overflow-hidden">
-          <!-- Header -->
           <div class="flex items-center justify-between p-4 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-900">
               Notifications
@@ -18,7 +17,7 @@
               class="p-1.5 rounded-full hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
               @click="notificationStore.NotificationIsOpen = false" aria-label="Close notifications">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-6" fill="none"
-                viewBox="0 0 24 24"><!-- Icon from Material Line Icons by Vjacheslav Trushkin - https://github.com/cyberalien/line-md/blob/master/license.txt -->
+                viewBox="0 0 24 24">
                 <g fill="none" stroke="currentColor" stroke-dasharray="16" stroke-dashoffset="16" stroke-linecap="round"
                   stroke-linejoin="round" stroke-width="2">
                   <path d="M7 7l10 10">
@@ -31,10 +30,7 @@
               </svg>
             </button>
           </div>
-
-          <!-- Notifications List -->
           <div class="flex-1 overflow-y-auto divide-y divide-gray-100">
-            <!-- Notification 1 -->
             <a href="/inbox?id=1"
               class="flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors focus:outline-none focus:bg-gray-100">
               <div class="relative flex-shrink-0">
@@ -51,8 +47,6 @@
                 <p class="text-sm text-gray-500 truncate mt-1">sent you a message</p>
               </div>
             </a>
-
-            <!-- Notification 2 -->
             <a href="/inbox?id=2"
               class="flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors focus:outline-none focus:bg-gray-100">
               <div class="relative flex-shrink-0 h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">

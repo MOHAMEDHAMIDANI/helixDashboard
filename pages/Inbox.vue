@@ -1,9 +1,7 @@
 <template>
     <MainLayout>
         <div class="flex h-screen bg-gray-50">
-            <!-- Inbox Sidebar -->
             <div class="w-96 border-r border-gray-200 bg-white flex flex-col">
-                <!-- Header -->
                 <div class="h-16 flex items-center justify-between px-6 border-b border-gray-200">
                     <div class="flex items-center gap-3">
                         <button class="p-2 rounded-lg hover:bg-gray-100 lg:hidden">
@@ -14,7 +12,6 @@
                             {{ unreadCount }}
                         </span>
                     </div>
-
                     <div class="bg-gray-100 rounded-full p-1 flex">
                         <button @click="setFilter('all')"
                             class="px-3 py-1 text-xs font-medium rounded-full transition-colors" :class="{
@@ -32,8 +29,6 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Email List -->
                 <div class="flex-1 overflow-y-auto">
                     <div v-for="email in filteredEmails" :key="email.id" @click="selectEmail(email)"
                         class="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors"
@@ -63,10 +58,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Email Content -->
             <div class="flex-1 flex flex-col bg-white" v-if="selectedEmail">
-                <!-- Email Header -->
                 <div class="h-16 flex items-center justify-between px-6 border-b border-gray-200">
                     <div class="flex items-center gap-3">
                         <button @click="selectedEmail = null" class="p-2 rounded-lg hover:bg-gray-100 lg:hidden">
@@ -74,7 +66,6 @@
                         </button>
                         <h1 class="font-semibold text-gray-900 truncate">{{ selectedEmail.subject }}</h1>
                     </div>
-
                     <div class="flex items-center gap-2">
                         <button @click="markAsRead(selectedEmail)" class="p-2 rounded-lg hover:bg-gray-100"
                             :class="{ 'text-blue-500': !selectedEmail.unread }"
@@ -89,8 +80,6 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Sender Info -->
                 <div class="px-6 py-4 border-b border-gray-200 flex items-start justify-between">
                     <div class="flex items-start gap-4">
                         <div class="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
@@ -104,14 +93,10 @@
                     </div>
                     <p class="text-sm text-gray-500">{{ formatDateTime(selectedEmail.date) }}</p>
                 </div>
-
-                <!-- Email Body -->
                 <div class="flex-1 p-6 overflow-y-auto">
                     <div class="prose max-w-none text-gray-700 whitespace-pre-wrap">
                         {{ selectedEmail.body }}
                     </div>
-
-                    <!-- Attachments -->
                     <div v-if="selectedEmail.attachments?.length" class="mt-6 pt-6 border-t border-gray-200">
                         <h3 class="text-sm font-medium text-gray-900 mb-3">Attachments</h3>
                         <div class="flex gap-3">
@@ -132,8 +117,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Reply Form -->
                 <div class="pb-6 px-6 border-t border-gray-200">
                     <div class="rounded-xl bg-gray-50 border border-gray-200">
                         <div class="px-4 py-3 border-b border-gray-200 flex items-center gap-2 text-gray-500">
@@ -161,8 +144,6 @@
                                     </button>
                                 </div>
                             </div>
-
-                            <!-- Attachment input -->
                             <div v-if="showAttachments" class="mt-3">
                                 <input type="file" ref="fileInput" multiple @change="handleFileUpload" class="hidden">
                                 <button type="button" @click="$refs.fileInput.click()"
@@ -170,7 +151,6 @@
                                     <PlusIcon class="w-4 h-4" />
                                     Add attachments
                                 </button>
-
                                 <div v-if="attachments.length" class="mt-2 space-y-2">
                                     <div v-for="(file, index) in attachments" :key="index"
                                         class="flex items-center justify-between p-2 bg-gray-100 rounded-lg">
@@ -191,8 +171,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Empty state -->
             <div v-else class="flex-1 flex items-center justify-center bg-gray-50">
                 <div class="text-center p-6 max-w-md">
                     <InboxIcon class="w-12 h-12 mx-auto text-gray-400" />
@@ -344,14 +322,12 @@ const emails = ref([
     }
 ])
 
-// State
 const filter = ref('all')
 const selectedEmail = ref(null)
 const replyContent = ref('')
 const showAttachments = ref(false)
 const attachments = ref([])
 
-// Computed
 const filteredEmails = computed(() => {
     if (filter.value === 'unread') {
         return emails.value.filter(email => email.unread)
@@ -363,14 +339,12 @@ const unreadCount = computed(() => {
     return emails.value.filter(email => email.unread).length
 })
 
-// Methods
 function setFilter(type) {
     filter.value = type
 }
 
 function selectEmail(email) {
     selectedEmail.value = email
-    // Mark as read when selected
     if (email.unread) {
         markAsRead(email)
     }
@@ -400,10 +374,8 @@ function removeAttachment(index) {
 function sendReply() {
     if (!replyContent.value.trim()) return
 
-    // In a real app, this would send to a server
     alert(`Reply sent:\n\n${replyContent.value}`)
 
-    // Reset form
     replyContent.value = ''
     attachments.value = []
     showAttachments.value = false
@@ -430,7 +402,6 @@ function formatFileSize(bytes) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-// Initialize with first email selected (for demo purposes)
 onMounted(() => {
     if (emails.value.length > 0) {
         selectEmail(emails.value[0])
@@ -443,7 +414,6 @@ onMounted(() => {
     line-height: 1.6;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;

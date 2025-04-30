@@ -1,8 +1,6 @@
 <template>
     <MainLayout>
-        <!-- Product Management Dashboard -->
         <div class="container mx-auto px-4 py-8">
-            <!-- Header with Action Buttons -->
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-2xl font-bold text-gray-800">Product Management</h1>
                 <div class="flex space-x-3">
@@ -23,8 +21,6 @@
                     </button>
                 </div>
             </div>
-
-            <!-- Products Table -->
             <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -38,29 +34,27 @@
                                     Category</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Brand</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Price</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status</th>
+                                    stock</th>
                                 <th
                                     class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="product in products" :key="product.id" class="hover:bg-gray-50">
+                            <tr v-for="product in productStore.Products" :key="product.id" class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10">
                                             <img class="h-10 w-10 rounded-md object-cover"
-                                                :src="product.images[0]?.url || '/placeholder-product.jpg'"
-                                                :alt="product.name">
+                                                :src="'http://localhost:3000/uploads/Product/' + product.image[0]"
+                                                :alt="product.productName">
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">{{ product.name }}</div>
+                                            <div class="text-sm font-medium text-gray-900">{{ product.productName }}
+                                            </div>
                                             <div class="text-sm text-gray-500">#{{ product.id }}</div>
                                         </div>
                                     </div>
@@ -68,21 +62,24 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ product.category.categoryName }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ product.brand }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 whitespace-nowrap ">
                                     <div class="text-sm text-gray-900">
                                         <span v-if="product.hasPromotion" class="line-through text-gray-400 mr-2">${{
-                                            product.price.toFixed(2) }}</span>
+                                            product.price }}</span>
                                         <span :class="{ 'text-red-600': product.hasPromotion }">${{ product.hasPromotion
-                                            ? product.promoPrice.toFixed(2) : product.price.toFixed(2) }}</span>
+                                            ? product.promotionPrice : product.price }}</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-                                        :class="product.hasPromotion ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'">
-                                        {{ product.hasPromotion ? 'On Sale' : 'Regular' }}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                                        <span v-if="product.stock > 0"
+                                            class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">
+                                            In Stock
+                                        </span>
+                                        <span v-else
+                                            class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-semibold">
+                                            Out of Stock
+                                        </span>
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -125,9 +122,7 @@
                     </table>
                 </div>
             </div>
-
-            <!-- Empty State -->
-            <div v-if="products.length === 0"
+            <div v-if="productStore.Products.length === 0"
                 class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
                 <ShoppingBagIcon class="mx-auto h-12 w-12 text-gray-400" />
                 <h3 class="mt-2 text-sm font-medium text-gray-900">No products</h3>
@@ -141,10 +136,10 @@
                 </div>
             </div>
 
-            <!-- Modals -->
-            <AddProduct v-if="addProduct" @close="addProduct = false" @submit="handleAddProduct" :category="categoryStore.categories" />
+            <AddProduct v-if="addProduct" @close="addProduct = false" @submit="handleAddProduct"
+                :category="categoryStore.categories" />
 
-            <EditProduct v-if="editingProduct" :productData="editingProduct" @close="editingProduct = null"
+            <EditProduct v-if="editingProduct" :product-data="editingProduct" @close="editingProduct = null" :categories="categoryStore.categories"
                 @submit="handleUpdateProduct" />
 
             <CreateCategory v-if="showCreateCategory" :isOpen="showCreateCategory" @close="showCreateCategory = false"
@@ -205,64 +200,18 @@ const showDeleteConfirm = ref(false)
 const editingProduct = ref<Product | null>(null)
 const productToDelete = ref<string | null>(null)
 const categoryStore = useCategoryStore()
-const products = ref<Product[]>([
-    {
-        id: '1',
-        name: 'Smartphone X',
-        category: 'PH',
-        brand: 'TechBrand',
-        price: 799.99,
-        description: 'Latest smartphone with advanced features',
-        hasPromotion: true,
-        promoPrice: 699.99,
-        discount: 12.5,
-        promoEndDate: '2023-12-31',
-        sizes: [{ value: 'S' }, { value: 'M' }],
-        colors: [{ value: 'Black', hex: '#000000' }, { value: 'Silver', hex: '#C0C0C0' }],
-        images: [
-            { url: '/images/products/smartphone-x-1.jpg' },
-            { url: '/images/products/smartphone-x-2.jpg' }
-        ]
-    },
-    {
-        id: '2',
-        name: 'Gaming Monitor Pro',
-        category: 'TV',
-        brand: 'GameVision',
-        price: 499.99,
-        description: '27" 144Hz gaming monitor with HDR',
-        hasPromotion: false,
-        promoPrice: 0,
-        discount: 0,
-        promoEndDate: '',
-        sizes: [{ value: '27"' }],
-        colors: [{ value: 'Black', hex: '#000000' }],
-        images: [
-            { url: '/images/products/monitor-1.jpg' }
-        ]
-    },
-    {
-        id: '3',
-        name: 'Wireless Earbuds',
-        category: 'PH',
-        brand: 'SoundWave',
-        price: 129.99,
-        description: 'Noise cancelling wireless earbuds',
-        hasPromotion: true,
-        promoPrice: 99.99,
-        discount: 23,
-        promoEndDate: '2023-11-30',
-        sizes: [{ value: 'One Size' }],
-        colors: [{ value: 'White', hex: '#FFFFFF' }, { value: 'Black', hex: '#000000' }],
-        images: [
-            { url: '/images/products/earbuds-1.jpg' },
-            { url: '/images/products/earbuds-2.jpg' }
-        ]
-    }
-])
+const productStore = useProductStore()
 
-const categories = ref<Category[]>([
+const products = ref<Product[]>([
+
 ])
+onMounted(async () => {
+    await categoryStore.getCategories()
+    await productStore.getProducts()
+    console.log('Products:', productStore.Products)
+    console.log('Categories:', categoryStore.categories)
+})
+const categories :Ref<Category[]> = computed(() => categoryStore.categories)
 
 
 const openCreateCategoryModal = () => {
@@ -278,7 +227,7 @@ const openEditCategoryModal = () => {
 }
 
 const openEditModal = (product: Product) => {
-    editingProduct.value = { ...product }
+    editingProduct.value = product
 }
 
 const confirmDelete = (id: string) => {
@@ -295,47 +244,14 @@ const deleteProduct = () => {
 }
 
 const handleAddProduct = (formData: FormData) => {
-    const newProduct = {
-        id: String(products.value.length + 1),
-        name: formData.get('name') as string,
-        category: formData.get('category') as string,
-        brand: formData.get('brand') as string,
-        price: parseFloat(formData.get('price') as string),
-        description: formData.get('description') as string,
-        hasPromotion: formData.get('hasPromotion') === 'true',
-        promoPrice: parseFloat(formData.get('promoPrice') as string) || 0,
-        discount: parseFloat(formData.get('discount') as string) || 0,
-        promoEndDate: formData.get('promoEndDate') as string || '',
-        sizes: JSON.parse(formData.get('sizes') as string),
-        colors: JSON.parse(formData.get('colors') as string),
-        images: [] // You would handle image uploads separately
-    }
-
-    products.value.unshift(newProduct)
+    console.log('Form Data:', formData)
     addProduct.value = false
 }
 
 const handleUpdateProduct = (formData: FormData) => {
-    const updatedProduct = {
-        id: formData.get('id') as string,
-        name: formData.get('name') as string,
-        category: formData.get('category') as string,
-        brand: formData.get('brand') as string,
-        price: parseFloat(formData.get('price') as string),
-        description: formData.get('description') as string,
-        hasPromotion: formData.get('hasPromotion') === 'true',
-        promoPrice: parseFloat(formData.get('promoPrice') as string) || 0,
-        discount: parseFloat(formData.get('discount') as string) || 0,
-        promoEndDate: formData.get('promoEndDate') as string || '',
-        sizes: JSON.parse(formData.get('sizes') as string),
-        colors: JSON.parse(formData.get('colors') as string),
-        images: JSON.parse(formData.get('existingImages') as string)
-    }
 
-    const index = products.value.findIndex(p => p.id === updatedProduct.id)
-    if (index !== -1) {
-        products.value[index] = updatedProduct
-    }
+
+    console.log('Updated Product Data:', formData)
 
     editingProduct.value = null
 }
@@ -343,7 +259,7 @@ const handleUpdateProduct = (formData: FormData) => {
 const handleCreateCategory = async (categoryName: string) => {
     try {
         console.log('Created category:', categoryName);
-        const newCategory : Category = await categoryStore.createCategory(categoryName);
+        const newCategory: Category = await categoryStore.createCategory(categoryName);
         categories.value.push(newCategory);
         showCreateCategory.value = false;
     } catch (error) {
@@ -351,7 +267,7 @@ const handleCreateCategory = async (categoryName: string) => {
     }
 }
 
-const handleUpdateCategory = async (updatedCategory: { id: string; name: string , index : number}) => {
+const handleUpdateCategory = async (updatedCategory: { id: string; name: string, index: number }) => {
     if (updatedCategory.index !== -1) {
         try {
             console.log('Updated category:', updatedCategory);
@@ -365,7 +281,6 @@ const handleUpdateCategory = async (updatedCategory: { id: string; name: string 
     showEditCategory.value = false
 }
 
-// Types
 interface Product {
     id: string
     name: string

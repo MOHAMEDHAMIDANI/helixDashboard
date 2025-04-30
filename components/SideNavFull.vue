@@ -23,8 +23,6 @@
                         </g>
                     </svg>
                 </button>
-
-                <!-- Mobile Logo with Gradient -->
                 <div class="flex items-center gap-2 w-full py-2">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6">
                         <defs>
@@ -45,7 +43,7 @@
                 <button type="button"
                     class="flex items-center gap-3 px-3 py-2 text-sm cursor-pointer rounded-lg border border-gray-200 hover:bg-gray-50">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
-                        viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined -->
+                        viewBox="0 0 24 24">
                         <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                             stroke-width="1.5"
                             d="m14 14l2.5 2.5m-.067 2.025a1.48 1.48 0 1 1 2.092-2.092l3.042 3.042a1.48 1.48 0 1 1-2.092 2.092zM16 9A7 7 0 1 0 2 9a7 7 0 0 0 14 0"

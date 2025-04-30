@@ -1,10 +1,8 @@
 <template>
     <MainLayout>
         <div class="flex h-screen bg-gray-50 dark:bg-gray-900">
-            <!-- Orders Sidebar -->
             <div
                 class="w-80 border-r border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col transition-all duration-300 transform">
-                <!-- Header -->
                 <div class="h-16 flex items-center justify-between px-6 border-b border-gray-100 dark:border-gray-800">
                     <div class="flex items-center gap-3">
                         <button
@@ -24,7 +22,6 @@
                             <FilterIcon class="w-5 h-5 text-gray-500 dark:text-gray-400" />
                         </button>
 
-                        <!-- Filter Dropdown -->
                         <transition enter-active-class="transition ease-out duration-100"
                             enter-from-class="transform opacity-0 scale-95"
                             enter-to-class="transform opacity-100 scale-100"
@@ -52,8 +49,6 @@
                         </transition>
                     </div>
                 </div>
-
-                <!-- Search -->
                 <div class="p-3 border-b border-gray-100 dark:border-gray-800">
                     <div class="relative">
                         <input type="text" v-model="searchQuery" placeholder="Search orders..."
@@ -61,8 +56,6 @@
                         <SearchIcon class="w-4 h-4 text-gray-400 absolute left-3 top-3" />
                     </div>
                 </div>
-
-                <!-- Order List -->
                 <div class="flex-1 overflow-y-auto">
                     <div v-for="order in filteredOrders" :key="order.id" @click="selectOrder(order)"
                         class="px-5 py-3 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-all duration-200 group"
@@ -99,12 +92,10 @@
                 </div>
             </div>
 
-            <!-- Order Details -->
             <transition enter-active-class="transition ease-out duration-300" enter-from-class="transform opacity-0"
                 enter-to-class="transform opacity-100" leave-active-class="transition ease-in duration-200"
                 leave-from-class="transform opacity-100" leave-to-class="transform opacity-0">
                 <div class="flex-1 flex flex-col bg-white dark:bg-gray-900 overflow-hidden" v-if="selectedOrder">
-                    <!-- Order Header -->
                     <div
                         class="h-16 flex items-center justify-between px-6 border-b border-gray-100 dark:border-gray-800">
                         <div class="flex items-center gap-4">
@@ -132,8 +123,6 @@
                                         class="p-2 rounded-lg text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                                         <MoreVerticalIcon class="w-5 h-5" />
                                     </button>
-
-                                    <!-- Status Dropdown Menu -->
                                     <transition enter-active-class="transition ease-out duration-100"
                                         enter-from-class="transform opacity-0 scale-95"
                                         enter-to-class="transform opacity-100 scale-100"
@@ -170,10 +159,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Main Content -->
                     <div class="flex-1 overflow-y-auto">
-                        <!-- Customer Card -->
                         <div class="p-6 border-b border-gray-100 dark:border-gray-800">
                             <div class="flex justify-between items-start mb-4">
                                 <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">CUSTOMER</h3>
@@ -206,8 +192,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Shipping Info -->
                         <div class="p-6 border-b border-gray-100 dark:border-gray-800">
                             <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">SHIPPING INFORMATION
                             </h3>
@@ -228,8 +212,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Order Items -->
                         <div class="p-6">
                             <div class="flex justify-between items-center mb-3">
                                 <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">ORDER ITEMS ({{
@@ -278,8 +260,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Order Summary -->
                             <div class="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
                                 <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">ORDER SUMMARY</h3>
                                 <div class="space-y-3">
@@ -315,8 +295,6 @@
                     </div>
                 </div>
             </transition>
-
-            <!-- Empty State -->
             <transition enter-active-class="transition ease-out duration-300" enter-from-class="transform opacity-0"
                 enter-to-class="transform opacity-100" leave-active-class="transition ease-in duration-200"
                 leave-from-class="transform opacity-100" leave-to-class="transform opacity-0">
@@ -329,8 +307,6 @@
                     </div>
                 </div>
             </transition>
-
-            <!-- Cancel Order Dialog -->
             <Modal :show="showCancelDialog" @close="showCancelDialog = false">
                 <div class="p-6">
                     <div
@@ -359,8 +335,6 @@
                     </div>
                 </div>
             </Modal>
-
-            <!-- Items Fullscreen Modal -->
             <Modal :show="showItemsFullscreen" @close="showItemsFullscreen = false" size="xl">
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-6">
@@ -642,7 +616,6 @@ const orders = ref([
     }
 ])
 
-// Tabs configuration
 const tabs = [
     { label: 'All', value: 'all' },
     { label: 'Pending', value: 'pending' },
@@ -651,7 +624,6 @@ const tabs = [
     { label: 'Canceled', value: 'canceled' }
 ]
 
-// State
 const filter = ref('all')
 const searchQuery = ref('')
 const selectedOrder = ref(null)
@@ -660,7 +632,6 @@ const showCancelDialog = ref(false)
 const showItemsFullscreen = ref(false)
 const showStatusMenu = ref(false)
 
-// Computed
 const filteredOrders = computed(() => {
     let result = orders.value
 
@@ -689,7 +660,6 @@ const pendingCount = computed(() => {
     return orders.value.filter(order => order.status === 'pending').length
 })
 
-// Methods
 function setFilter(type) {
     filter.value = type
     showFilters.value = false
@@ -706,12 +676,11 @@ function updateOrderStatus(status) {
         showStatusMenu.value = false
 
         if (status === 'delivered') {
-            // Auto-complete after some time
             setTimeout(() => {
                 if (selectedOrder.value.status === 'delivered') {
                     selectedOrder.value.status = 'completed'
                 }
-            }, 86400000) // 24 hours
+            }, 86400000) 
         }
     }
 }
@@ -779,7 +748,6 @@ function formatCurrency(amount) {
     }).format(amount)
 }
 
-// Initialize with first order selected (for demo purposes)
 onMounted(() => {
     if (orders.value.length > 0) {
         selectOrder(orders.value[0])
@@ -788,7 +756,6 @@ onMounted(() => {
 </script>
 
 <style>
-/* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -817,7 +784,6 @@ onMounted(() => {
 }
 
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;

@@ -12,14 +12,22 @@ export interface User {
 export interface Product {
     id: string;
     productName: string;
-    price: number;
-    images: string[];
-    sizes: string[]; 
-    colors: string[]; 
+    price: string; 
+    hasPromotion: boolean;
+    promotionPrice: string | null;
+    promotionPercentage: string | null;
+    promotionEndDate: string | null;
+    image: string[]; 
+    sizes: string;
+    colors: string;
     description: string;
     stock: number;
-    category: Category;
-    orders?: Order[];
+    category: {
+        id: string;
+        categoryName: string;
+    };
+    isPromotionExpired: boolean;
+    isPromotionActive: boolean;
 }
 
 export interface Order {

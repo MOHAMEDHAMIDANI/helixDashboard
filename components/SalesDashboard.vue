@@ -1,6 +1,5 @@
 <template>
     <div class="dashboard">
-        <!-- Header -->
         <div class="dashboard-header">
             <h2>Sales & Revenue Analytics</h2>
             <div class="time-filters">
@@ -9,21 +8,15 @@
                 <button @click="setTimeRange('year')" :class="{ active: timeRange === 'year' }">Yearly</button>
             </div>
         </div>
-
-        <!-- Metrics Cards -->
         <div class="metrics-grid">
             <MetricCard title="Total Revenue" :value="`$${formatNumber(totalRevenue)}`" trend="up" :change="12.5" />
             <MetricCard title="New Customers" :value="formatNumber(245)" trend="up" :change="8.2" />
             <MetricCard title="Avg. Order Value" :value="`$${formatNumber(89.67)}`" trend="down" :change="3.4" />
             <MetricCard title="Conversion Rate" :value="`${formatNumber(2.8)}%`" trend="up" :change="1.1" />
         </div>
-
-        <!-- Main Chart -->
         <div class="chart-container">
             <canvas ref="combinedChart"></canvas>
         </div>
-
-        <!-- Secondary Charts -->
         <div class="secondary-charts">
             <div class="chart-wrapper">
                 <h3>Revenue by Category</h3>
@@ -42,8 +35,6 @@ import { ref, onMounted, watch } from 'vue'
 import { Chart, registerables } from 'chart.js'
 import annotationPlugin from 'chartjs-plugin-annotation'
 Chart.register(...registerables, annotationPlugin)
-
-// Props
 const props = defineProps({
     darkMode: {
         type: Boolean,
@@ -51,13 +42,10 @@ const props = defineProps({
     }
 })
 
-// Refs
 const combinedChart = ref(null)
 const doughnutChart = ref(null)
 const funnelChart = ref(null)
 const timeRange = ref('month')
-
-// Sample Data
 const chartData = {
     month: {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -76,13 +64,10 @@ const chartData = {
         funnel: [350, 280, 190, 85, 45]
     }
 }
-
-// Computed
 const totalRevenue = computed(() => {
     return chartData[timeRange.value].revenue.reduce((a, b) => a + b, 0)
 })
 
-// Methods
 const setTimeRange = (range) => {
     timeRange.value = range
 }
@@ -91,7 +76,6 @@ const formatNumber = (num) => {
     return new Intl.NumberFormat().format(num)
 }
 
-// Chart Configurations
 const getChartTheme = () => ({
     textColor: props.darkMode ? '#E2E8F0' : '#4A5568',
     gridColor: props.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
@@ -307,7 +291,6 @@ const initFunnelChart = () => {
     })
 }
 
-// Lifecycle
 let combinedChartInstance = null
 let doughnutChartInstance = null
 let funnelChartInstance = null

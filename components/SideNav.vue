@@ -7,9 +7,7 @@
             <button type="button"
                 class="p-2 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center w-full"
                 @click="NavStore.toggleNav">
-                
-                <!-- Collapsed State (Icon Only) -->
-                <svg v-if="!NavStore.NavIsOpen" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
+                                <svg v-if="!NavStore.NavIsOpen" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
                      class="h-8 w-8">
                     <defs>
                         <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -24,9 +22,7 @@
                           text-anchor="middle"
                           fill="url(#iconGradient)">H</text>
                 </svg>
-                
-                <!-- Expanded State (Full Logo) -->
-                <svg v-else viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                <svg v-else viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="w-full h-8">
                     <defs>
                         <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -49,7 +45,7 @@
                 class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600"
                 :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'" aria-label="Search">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
-                    viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined -->
+                    viewBox="0 0 24 24">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="1.5"
                         d="m14 14l2.5 2.5m-.067 2.025a1.48 1.48 0 1 1 2.092-2.092l3.042 3.042a1.48 1.48 0 1 1-2.092 2.092zM16 9A7 7 0 1 0 2 9a7 7 0 0 0 14 0"

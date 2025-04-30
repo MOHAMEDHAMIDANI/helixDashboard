@@ -1,4 +1,3 @@
-// stores/auth.ts
 import { Upload } from 'lucide-vue-next';
 import { defineStore } from 'pinia';
 
