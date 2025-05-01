@@ -237,8 +237,8 @@ const product = ref({
     images: [] as { file: File, preview: string }[]
 })
 
-const existingImages = ref(props.productData.image || [])
-
+const existingImages = ref<string[]>(props.productData.image || []);
+const imagesToDelete = ref<string[]>([]);
 watch(() => props.productData, (newVal) => {
     product.value = {
         id: newVal.id,
@@ -251,12 +251,13 @@ watch(() => props.productData, (newVal) => {
         promotionPrice: newVal.promotionPrice ? parseFloat(newVal.promotionPrice) : 0,
         promotionPercentage: newVal.promotionPercentage ? parseFloat(newVal.promotionPercentage) : 0,
         promotionEndDate: newVal.promotionEndDate || '',
-        sizes: newVal.sizes ? JSON.parse(newVal.sizes[0]) : [],
-        colors: newVal.colors ? JSON.parse(newVal.colors) : [],
+        sizes: Array.isArray(newVal.sizes) ? newVal.sizes : (newVal.sizes ? JSON.parse(newVal.sizes) : []),
+        colors: Array.isArray(newVal.colors) ? newVal.colors : (newVal.colors ? JSON.parse(newVal.colors) : []),
         images: []
-    }
-    existingImages.value = newVal.image || []
-}, { deep: true })
+    };
+    existingImages.value = newVal.image || [];
+}, { deep: true });
+
 const addSize = () => {
     product.value.sizes.push('')
 }
@@ -315,8 +316,9 @@ const removeImage = (index: number) => {
 }
 
 const removeExistingImage = (index: number) => {
-    existingImages.value.splice(index, 1)
-}
+    imagesToDelete.value.push(existingImages.value[index]);
+    existingImages.value.splice(index, 1);
+};
 const productStore = useProductStore()
 onBeforeUnmount(() => {
     product.value.images.forEach(image => {
@@ -360,7 +362,7 @@ const submitForm = async () => {
 
         formData.append('size', JSON.stringify(product.value.sizes))
         formData.append('color', JSON.stringify(product.value.colors))
-
+        formData.append('imagesToDelete', JSON.stringify(imagesToDelete.value));
         formData.append('existingImages', JSON.stringify(existingImages.value))
         product.value.images.forEach(image => {
             formData.append('files', image.file)
@@ -372,7 +374,6 @@ const submitForm = async () => {
         emit('close')
     } catch (error) {
         console.error('Error submitting form:', error)
-        alert(error.response?.data?.message || 'An error occurred while submitting the form')
     }
 }
 </script>

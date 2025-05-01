@@ -49,6 +49,7 @@ export const useProductStore = defineStore('product', {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
+                console.log('response', response.data)
                 const index = this.Products.findIndex(p => p.id === id)
                 if (index !== -1) {
                     this.Products[index] = response.data
@@ -68,10 +69,10 @@ export const useProductStore = defineStore('product', {
             this.error = null
 
             try {
-                await $axios.delete(`/category/${id}`)
-                this.categories = this.categories.filter(c => c.id !== id)
+                await $axios.delete(`/products/${id}`)
+                this.Products = this.Products.filter(c => c.id !== id)
             } catch (err: any) {
-                this.error = err.response?.data?.message || 'Category deletion failed'
+                this.error = err.response?.data?.message || 'Product deletion failed'
                 throw err
             } finally {
                 this.loading = false

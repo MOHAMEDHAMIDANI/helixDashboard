@@ -139,8 +139,8 @@
             <AddProduct v-if="addProduct" @close="addProduct = false" @submit="handleAddProduct"
                 :category="categoryStore.categories" />
 
-            <EditProduct v-if="editingProduct" :product-data="editingProduct" @close="editingProduct = null" :categories="categoryStore.categories"
-                @submit="handleUpdateProduct" />
+            <EditProduct v-if="editingProduct" :product-data="editingProduct" @close="editingProduct = null"
+                :categories="categoryStore.categories" @submit="handleUpdateProduct" />
 
             <CreateCategory v-if="showCreateCategory" :isOpen="showCreateCategory" @close="showCreateCategory = false"
                 @submit="handleCreateCategory" />
@@ -191,6 +191,7 @@ import {
 import MainLayout from '~/layouts/mainLayout.vue'
 import CreateCategory from '~/components/createCategory.vue'
 import EditCategory from '~/components/editCategory.vue'
+import type { Category, Product } from '~/types'
 
 
 const addProduct = ref(false)
@@ -202,16 +203,13 @@ const productToDelete = ref<string | null>(null)
 const categoryStore = useCategoryStore()
 const productStore = useProductStore()
 
-const products = ref<Product[]>([
-
-])
 onMounted(async () => {
     await categoryStore.getCategories()
     await productStore.getProducts()
     console.log('Products:', productStore.Products)
     console.log('Categories:', categoryStore.categories)
 })
-const categories :Ref<Category[]> = computed(() => categoryStore.categories)
+const categories: ComputedRef<Category[]> = computed(() => categoryStore.categories)
 
 
 const openCreateCategoryModal = () => {
@@ -230,37 +228,34 @@ const openEditModal = (product: Product) => {
     editingProduct.value = product
 }
 
-const confirmDelete = (id: string) => {
+const confirmDelete = async (id: string) => {
     productToDelete.value = id
     showDeleteConfirm.value = true
 }
 
-const deleteProduct = () => {
+const deleteProduct = async() => {
     if (productToDelete.value) {
-        products.value = products.value.filter(p => p.id !== productToDelete.value)
+        await productStore.deleteProduct(productToDelete.value)
+        console.log('Product to delete:', productToDelete.value)
         productToDelete.value = null
         showDeleteConfirm.value = false
     }
 }
 
 const handleAddProduct = (formData: FormData) => {
-    console.log('Form Data:', formData)
+    console.log('New Product Data:', formData)
     addProduct.value = false
 }
 
 const handleUpdateProduct = (formData: FormData) => {
-
-
     console.log('Updated Product Data:', formData)
-
     editingProduct.value = null
 }
 
 const handleCreateCategory = async (categoryName: string) => {
     try {
         console.log('Created category:', categoryName);
-        const newCategory: Category = await categoryStore.createCategory(categoryName);
-        categories.value.push(newCategory);
+        await categoryStore.createCategory(categoryName);
         showCreateCategory.value = false;
     } catch (error) {
         console.error('Error creating category:', error);
@@ -281,26 +276,6 @@ const handleUpdateCategory = async (updatedCategory: { id: string; name: string,
     showEditCategory.value = false
 }
 
-interface Product {
-    id: string
-    name: string
-    category: string
-    brand: string
-    price: number
-    description: string
-    hasPromotion: boolean
-    promoPrice: number
-    discount: number
-    promoEndDate: string
-    sizes: { value: string }[]
-    colors: { value: string; hex: string }[]
-    images: { url: string }[]
-}
-
-interface Category {
-    id: string
-    name: string
-}
 </script>
 
 <style scoped>
