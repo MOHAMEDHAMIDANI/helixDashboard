@@ -118,4 +118,4 @@ export interface CreateOrderDto {
 }
 
 export type UserWithoutPassword = Omit<User, 'password'>;
-export type ProductPreview = Pick<Product, 'id' | 'productName' | 'price' | 'images'>;
+export type ProductPreview = Pick<Product, 'id' | 'productName' | 'price' | 'image'>;
