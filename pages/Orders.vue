@@ -418,8 +418,6 @@ import {
     Maximize as MaximizeIcon,
     MoreVertical as MoreVerticalIcon
 } from 'lucide-vue-next'
-
-// Sample data
 const orders = ref([
     {
         id: 1001,

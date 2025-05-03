@@ -310,6 +310,7 @@ const submitForm = async () => {
         formData.append('hasPromotion', product.value.hasPromotion.toString());
 
         if (product.value.hasPromotion) {
+            formData.append('hasPromotion', product.value.hasPromotion);
             formData.append('promotionPrice', product.value.promoPrice.toString());
             formData.append('promotionPercentage', product.value.discount.toString());
             formData.append('promotionEndDate', product.value.promoEndDate);

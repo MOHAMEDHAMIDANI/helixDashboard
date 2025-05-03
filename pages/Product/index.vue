@@ -279,5 +279,4 @@ const handleUpdateCategory = async (updatedCategory: { id: string; name: string,
 </script>
 
 <style scoped>
-/* Custom styles if needed */
 </style>
