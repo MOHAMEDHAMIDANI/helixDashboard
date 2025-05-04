@@ -56,22 +56,23 @@ export const useCategoryStore = defineStore('category', {
             }
         },
 
-        async deleteCategory(id: string) {
-            const { $axios } = useNuxtApp()
-            this.loading = true
-            this.error = null
-
+        async deleteCategory(id: string, index: number) {
+            const { $axios } = useNuxtApp();
+            this.loading = true;
+            this.error = null;
             try {
-                await $axios.delete(`/category/${id}`)
-                this.categories = this.categories.filter(c => c.id !== id)
+                console.log('Deleting category in store with id:', id, 'at index:', index);
+                await $axios.delete(`/category/${id}`);
+                if (index >= 0 && index < this.categories.length) {
+                    this.categories.splice(index, 1);
+                }
             } catch (err: any) {
-                this.error = err.response?.data?.message || 'Category deletion failed'
-                throw err
+                this.error = err.response?.data?.message || 'Category deletion failed';
+                throw err;
             } finally {
-                this.loading = false
+                this.loading = false;
             }
         },
-
         async getCategories() {
             const { $axios } = useNuxtApp()
             this.loading = true

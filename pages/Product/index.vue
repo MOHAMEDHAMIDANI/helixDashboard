@@ -145,7 +145,7 @@
             <CreateCategory v-if="showCreateCategory" :isOpen="showCreateCategory" @close="showCreateCategory = false"
                 @submit="handleCreateCategory" />
             <EditCategory v-if="showEditCategory" :isOpen="showEditCategory" :category="categoryStore.categories"
-                @close="showEditCategory = false" @submit="handleUpdateCategory" />
+                @close="showEditCategory = false" @submit="handleUpdateCategory" @delete="handleDeleteCategory" />
             <Modal :isOpen="showDeleteConfirm" @close="showDeleteConfirm = false">
                 <template #title>
                     <div class="flex items-center">
@@ -233,7 +233,7 @@ const confirmDelete = async (id: string) => {
     showDeleteConfirm.value = true
 }
 
-const deleteProduct = async() => {
+const deleteProduct = async () => {
     if (productToDelete.value) {
         await productStore.deleteProduct(productToDelete.value)
         console.log('Product to delete:', productToDelete.value)
@@ -251,7 +251,15 @@ const handleUpdateProduct = (formData: FormData) => {
     console.log('Updated Product Data:', formData)
     editingProduct.value = null
 }
-
+const handleDeleteCategory = async (id: string, index: number) => {
+    try {
+        console.log('Deleting category in index.vue with id:', id, 'at index:', index);
+        await categoryStore.deleteCategory(id, index);
+        showEditCategory.value = false;
+    } catch (error) {
+        console.error('Error deleting category:', error);
+    }
+};
 const handleCreateCategory = async (categoryName: string) => {
     try {
         console.log('Created category:', categoryName);
@@ -278,5 +286,4 @@ const handleUpdateCategory = async (updatedCategory: { id: string; name: string,
 
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
