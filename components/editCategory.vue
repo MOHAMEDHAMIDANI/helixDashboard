@@ -149,7 +149,7 @@ watch(selectedCategory, (newVal) => {
         newName.value = newVal.categoryName
     }
 })
-
+ const categoryStore = useCategoryStore()
 const confirmDelete = (category: Category, index: number) => {
     categoryToDelete.value = category
     categoryToDeleteIndex.value = index
@@ -157,10 +157,10 @@ const confirmDelete = (category: Category, index: number) => {
     dropdownOpen.value = false
 }
 
-const handleDelete = () => {
+const handleDelete = async() => {
     if (categoryToDelete.value && categoryToDeleteIndex.value !== null) {
         console.log('Emitting delete event for:', categoryToDelete.value.id, 'at index:', categoryToDeleteIndex.value);
-        emit('delete', categoryToDelete.value.id, categoryToDeleteIndex.value);
+        await categoryStore.deleteCategory(categoryToDelete.value.id, categoryToDeleteIndex.value)
         showDeleteConfirmation.value = false;
         categoryToDelete.value = null;
         categoryToDeleteIndex.value = null;
