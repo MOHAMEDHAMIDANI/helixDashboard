@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <div v-if="NavStore.NavIsOpen" class="fixed inset-0 bg-black/75 z-40 lg:hidden"
-            @click="NavStore.NavIsOpen = false" aria-hidden="true" role="presentation" />
+            @click="NavStore.NavIsOpen = false"  role="presentation" />
     </transition>
     <transition name="slide">
         <div v-if="NavStore.NavIsOpen" ref="NavBarFull"

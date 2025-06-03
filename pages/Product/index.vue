@@ -86,7 +86,7 @@
                                     <Menu as="div" class="relative inline-block text-left">
                                         <div>
                                             <MenuButton class="flex items-center text-gray-400 hover:text-gray-600">
-                                                <EllipsisVerticalIcon class="h-5 w-5" aria-hidden="true" />
+                                                <EllipsisVerticalIcon class="h-5 w-5"  />
                                             </MenuButton>
                                         </div>
                                         <transition enter-active-class="transition ease-out duration-100"

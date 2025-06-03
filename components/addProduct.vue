@@ -6,7 +6,7 @@
                 <button type="button"
                     class="text-gray-400 hover:text-gray-500 p-1 rounded-full hover:bg-gray-100 transition-colors"
                     @click="emit('close')">
-                    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    <svg class="w-6 h-6"  xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18 17.94 6M18 18 6.06 6"></path>
@@ -164,7 +164,7 @@
                             <label for="dropzone-file"
                                 class="flex flex-col items-center justify-center w-32 h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
                                 <div class="flex flex-col items-center justify-center p-4 text-center">
-                                    <svg aria-hidden="true" class="w-8 h-8 mb-2 text-gray-500" fill="none"
+                                    <svg  class="w-8 h-8 mb-2 text-gray-500" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
