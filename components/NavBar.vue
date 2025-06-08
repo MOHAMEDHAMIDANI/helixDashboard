@@ -24,14 +24,17 @@
 
         <div class="flex items-center gap-3 shrink-0">
             <button type="button" @click="notificationStore.toggleNotification"
-                class="p-1.5 rounded-md hover:bg-gray-100 transition-colors relative focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                class="p-1.5 rounded-full hover:bg-gray-100 transition-colors relative focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 aria-label="Notifications">
-                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <svg class="size-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="1.5"
                         d="M14.857 17.082a24 24 0 0 0 5.454-1.31A8.97 8.97 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.97 8.97 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.3 24.3 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
                 </svg>
-                <span class="absolute top-1 right-1.5 h-2 w-2 rounded-full bg-red-600 ring-1 ring-white"></span>
+                <span v-if="notificationStore.unreadCount > 0"
+                    class="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-medium ring-2 ring-white">
+                    {{ notificationStore.unreadCount > 99 ? '99+' : notificationStore.unreadCount }}
+                </span>
             </button>
 
             <div class="relative">
@@ -100,13 +103,23 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
 import { ref } from 'vue';
+import { useAuthStore } from "~/stores/auth";
+import { useRouter } from "vue-router";
 
 const NavStore = useNavStore();
 const notificationStore = useNotificationStore();
 const openAdd = ref(false);
 const addButton = ref<HTMLElement | null>(null);
+const authStore = useAuthStore();
+const router = useRouter();
+const isOpen = ref(false);
 
 onClickOutside(addButton, () => {
     openAdd.value = false;
 });
+
+const logout = async () => {
+  await authStore.logout();
+  router.push("/login");
+};
 </script>

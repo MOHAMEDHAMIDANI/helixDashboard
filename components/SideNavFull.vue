@@ -76,7 +76,7 @@
                             </g>
                         </svg>
                         <span class="truncate capitalize">Inbox</span>
-                        <span class="ms-auto text-xs px-1.5 py-0.5 rounded border border-gray-200 bg-white">4</span>
+                        <span class="ms-auto text-xs px-1.5 py-0.5 rounded border border-gray-200 bg-white">{{ notificationStore.unreadCount }}</span>
                     </nuxtLink>
                     <nuxtLink :to="{ name: 'Product' }"
                         class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
@@ -130,6 +130,7 @@
 import { onClickOutside, useMediaQuery } from '@vueuse/core'
 const NavStore = useNavStore()
 const authStore = useAuthStore()
+const notificationStore = useNotificationStore()
 const route = useRoute()
 const NavBarFull = ref<HTMLElement | null>(null)
 

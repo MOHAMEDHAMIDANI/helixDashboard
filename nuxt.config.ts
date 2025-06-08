@@ -1,15 +1,31 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  css: ['~/assets/css/main.css'],
 
-  vite: {
-    plugins: [
-      tailwindcss(),
-    ],
+  modules: [
+    '@pinia/nuxt',
+    '@nuxtjs/tailwindcss',
+    'nuxt-icon',
+    '@vueuse/nuxt',
+  ],
+
+  build: {
+    transpile: ['socket.io-client'],
   },
 
-  modules: ['@pinia/nuxt'],
+  runtimeConfig: {
+    public: {
+      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:3000',
+    },
+  },
+
+  compatibilityDate: '2025-06-08',
+
+  pinia: {
+    autoImports: ['defineStore', 'storeToRefs'],
+  },
+
+  plugins: [
+    '~/plugins/pinia-persist.client.ts'
+  ]
 })

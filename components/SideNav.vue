@@ -41,20 +41,7 @@
         </div>
 
         <div class="flex flex-col gap-1 flex-1 overflow-y-auto px-2 py-4">
-            <button type="button"
-                class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600"
-                :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'" aria-label="Search">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
-                    viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="1.5"
-                        d="m14 14l2.5 2.5m-.067 2.025a1.48 1.48 0 1 1 2.092-2.092l3.042 3.042a1.48 1.48 0 1 1-2.092 2.092zM16 9A7 7 0 1 0 2 9a7 7 0 0 0 14 0"
-                        color="currentColor" />
-                </svg>
-                <span v-if="NavStore.NavIsOpen" class="text-sm ml-3">Search</span>
-            </button>
-
-            <nav aria-label="Main" class="flex flex-col gap-1 mt-2">
+            <nav aria-label="Main" class="flex flex-col gap-1">
                 <nuxtLink :to="{ name: 'index' }" class="flex items-center p-2 rounded-lg transition-colors"
                     :class="NavStore.NavIsOpen ? 'text-blue-600 bg-blue-50 justify-start' : 'text-gray-600 hover:bg-gray-100 justify-center'"
                     aria-current="page">
@@ -76,7 +63,7 @@
                         </g>
                     </svg>
                     <span v-if="NavStore.NavIsOpen" class="flex-1 ml-3">Inbox</span>
-                    <span v-if="NavStore.NavIsOpen" class="text-xs px-1.5 py-0.5 rounded-full bg-gray-200">4</span>
+                    <span v-if="NavStore.NavIsOpen" class="text-xs px-1.5 py-0.5 rounded-full bg-gray-200">{{ notificationStore.unreadCount }}</span>
                 </nuxtLink>
 
                 <nuxtLink :to="{ name: 'Product' }"
@@ -120,9 +107,9 @@
         <div class="shrink-0 flex items-center p-2 border-t border-gray-200">
             <nuxtLink :to="{ name: 'Profile' }"  type="button" class="flex items-center p-1 rounded-lg hover:bg-gray-100 transition-colors w-full"
                 :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'">
-                <img :src="'http://localhost:3000/uploads/Profile/' + authStore.user?.avatar" alt="Benjamin Canac" class="h-8 w-8 rounded-full">
+                <img :src="'http://localhost:3000/uploads/Profile/' + authStore.user?.avatar" alt="Profile" class="h-8 w-8 rounded-full">
                 <div v-if="NavStore.NavIsOpen" class="text-left ml-3">
-                    <p class="text-sm font-medium text-gray-800">{{ authStore.user?.fullName}}</p>
+                    <p class="text-sm font-medium text-gray-800">{{ authStore.user?.name }}</p>
                 </div>
             </nuxtLink>
         </div>
@@ -132,4 +119,5 @@
 <script setup lang="ts">
 const NavStore = useNavStore()
 const authStore = useAuthStore()
+const notificationStore = useNotificationStore()
 </script>
