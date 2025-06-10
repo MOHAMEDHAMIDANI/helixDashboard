@@ -64,9 +64,10 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap ">
                                     <div class="text-sm text-gray-900">
-                                        <span v-if="product.hasPromotion" class="line-through text-gray-400 mr-2">${{
+                                        <span v-if="product.hasPromotion" class="line-through text-gray-400 mr-2">DA{{
                                             product.price }}</span>
-                                        <span :class="{ 'text-red-600': product.hasPromotion }">${{ product.hasPromotion
+                                        <span :class="{ 'text-red-600': product.hasPromotion }">DA{{
+                                            product.hasPromotion
                                             ? product.promotionPrice : product.price }}</span>
                                     </div>
                                 </td>

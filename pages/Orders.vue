@@ -364,14 +364,12 @@ const tabs = [
     { label: 'Canceled', value: 'canceled' }
 ]
 
-// Fetch orders from the backend
 async function fetchOrders() {
     try {
         isLoading.value = true
         error.value = null
         const response = await $axios.get('/order')
         orders.value = response.data
-        // Automatically select the first order if available
         if (orders.value.length > 0) {
             selectedOrder.value = orders.value[0]
         } else {
@@ -384,8 +382,6 @@ async function fetchOrders() {
         isLoading.value = false
     }
 }
-
-// Update order status
 async function handleStatusUpdate(status) {
     if (!selectedOrder.value) return
 
@@ -393,21 +389,15 @@ async function handleStatusUpdate(status) {
         const response = await $axios.patch(`/order/${selectedOrder.value.id}/status`, { status })
         selectedOrder.value = response.data
         showStatusMenu.value = false
-
-        // Update the order in the list
         const index = orders.value.findIndex(o => o.id === response.data.id)
         if (index !== -1) {
             orders.value[index] = response.data
         }
-
-        // Show notification
         notificationStore.add({
             type: 'success',
             message: `Order status updated to ${status}`,
             duration: 3000
         })
-
-        // If status is delivered, schedule completion after 24 hours
         if (status === 'delivered') {
             setTimeout(async () => {
                 try {
@@ -430,7 +420,7 @@ async function handleStatusUpdate(status) {
                         duration: 3000
                     })
                 }
-            }, 86400000) // 24 hours
+            }, 86400000)
         }
     } catch (err) {
         
@@ -441,21 +431,15 @@ async function handleStatusUpdate(status) {
         })
     }
 }
-
-// Cancel order
 async function cancelOrder(order) {
     
     try {
         const response = await $axios.patch(`/order/${order.id}/status`, { status: 'canceled' })
         
-
-        // Update the order in the local list with the response data
         const index = orders.value.findIndex(o => o.id === response.data.id)
         if (index !== -1) {
             orders.value[index] = response.data
         }
-
-        // Update selected order if it's the one being canceled
         if (selectedOrder.value?.id === order.id) {
             selectedOrder.value = response.data;
         }
@@ -479,7 +463,6 @@ async function cancelOrder(order) {
     }
 }
 
-// Add default values for customer data
 function getCustomerName(order) {
     if (order.customer?.name) {
         return order.customer.name
@@ -498,8 +481,6 @@ function getCustomerPhone(order) {
 function getCustomerAvatar(order) {
     return order.customer?.avatar || '/default-avatar.png'
 }
-
-// Update the filteredOrders computed property to handle null values
 const filteredOrders = computed(() => {
     let result = orders.value
 
@@ -598,7 +579,6 @@ function formatCurrency(amount) {
     }).format(amount)
 }
 
-// Shorten order ID for display
 function shortOrderId(id) {
     if (!id) return ''
     return `#${id.slice(0, 6)}...${id.slice(-4)}`

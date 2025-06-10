@@ -40,25 +40,10 @@
             </div>
 
             <div class="flex flex-col gap-4 flex-1 overflow-y-auto px-6 py-4">
-                <button type="button"
-                    class="flex items-center gap-3 px-3 py-2 text-sm cursor-pointer rounded-lg border border-gray-200 hover:bg-gray-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
-                        viewBox="0 0 24 24">
-                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="m14 14l2.5 2.5m-.067 2.025a1.48 1.48 0 1 1 2.092-2.092l3.042 3.042a1.48 1.48 0 1 1-2.092 2.092zM16 9A7 7 0 1 0 2 9a7 7 0 0 0 14 0"
-                            color="currentColor" />
-                    </svg>
-                    <span class="truncate">Search...</span>
-                    <div class="hidden lg:flex items-center gap-1 ms-auto">
-                        <kbd class="px-1 rounded text-xs border border-gray-300 bg-gray-100 h-5">⊞</kbd>
-                        <kbd class="px-1 rounded text-xs border border-gray-300 bg-gray-100 h-5">K</kbd>
-                    </div>
-                </button>
-
                 <nav aria-label="Main" class="flex flex-col gap-1">
                     <nuxtLink :to="{ name: 'index' }"
-                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-blue-600 bg-blue-50">
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg"
+                        :class="isActive('index') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M15 20v-7h7v7zm-4-9V4h11v7zm-9 9v-7h11v7zm0-9V4h7v7z" />
                         </svg>
@@ -66,7 +51,8 @@
                     </nuxtLink>
 
                     <nuxtLink :to="{ name: 'Inbox' }"
-                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg"
+                        :class="isActive('Inbox') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
                             <g fill="none" stroke="currentColor" stroke-width="1.5">
                                 <path
@@ -79,7 +65,8 @@
                         <span class="ms-auto text-xs px-1.5 py-0.5 rounded border border-gray-200 bg-white">{{ notificationStore.unreadCount }}</span>
                     </nuxtLink>
                     <nuxtLink :to="{ name: 'Product' }"
-                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg"
+                        :class="isActive('Product') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 48 48">
                             <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
                                 <path d="M44 14L24 4L4 14v20l20 10l20-10z" />
@@ -89,15 +76,17 @@
                         <span class="truncate capitalize">Products</span>
                     </nuxtLink>
                     <nuxtLink :to="{ name: 'Orders' }"
-                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg"
+                        :class="isActive('Orders') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                 d="M4 18V7.1L2.45 3.75q-.175-.375-.025-.763t.525-.562t.763-.037t.562.512L6.2 7.05h11.6l1.925-4.15q.175-.375.563-.525t.762.05q.375.175.525.563t-.025.762L20 7.1V18q0 .825-.587 1.413T18 20H6q-.825 0-1.412-.587T4 18m6-5h4q.425 0 .713-.288T15 12t-.288-.712T14 11h-4q-.425 0-.712.288T9 12t.288.713T10 13" />
                         </svg>
                         <span class="truncate capitalize">Orders</span>
                     </nuxtLink>
-                    <nuxtLink :to="{ name: 'Profile' }"
-                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                    <nuxtLink :to="{ name: 'index' }"
+                        class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg"
+                        :class="isActive('index') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-5"
                             viewBox="0 0 24 24">
                             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -135,6 +124,10 @@ const route = useRoute()
 const NavBarFull = ref<HTMLElement | null>(null)
 
 const isMobile = computed(() => window.innerWidth < 1024)
+
+const isActive = (name: string) => {
+    return route.name === name
+}
 
 const handleKeydown = (e: KeyboardEvent) => {
     if (NavStore.NavIsOpen && e.key === 'Escape') {

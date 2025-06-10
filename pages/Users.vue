@@ -147,14 +147,10 @@ interface FrontendUserType {
 const users = ref<FrontendUserType[]>([]);
 const loading = ref(true);
 const error = ref<Error | null>(null);
-
-// Create User Modal State
 const showCreateUserModal = ref(false);
 const newUser = ref({ fullName: '', PhoneNum: '', email: '', password: '' });
 const createUserManager = ref({ loading: false, error: null as string | null });
 const createUserSuccess = ref(false);
-
-// Delete User Modal State
 const showDeleteConfirmModal = ref(false);
 const userIdToDelete = ref<string | null>(null);
 const deleteUserManager = ref({ loading: false, error: null as string | null });
@@ -178,7 +174,6 @@ const fetchUsers = async () => {
 
 const openCreateUserModal = () => {
     showCreateUserModal.value = true;
-     // Reset form and state
     newUser.value = { fullName: '', PhoneNum: '', email: '', password: '' };
     createUserManager.value = { loading: false, error: null };
     createUserSuccess.value = false;
@@ -194,12 +189,10 @@ const createUser = async () => {
     createUserSuccess.value = false;
 
     try {
-        // Note: Password hashing should be handled by the backend service/subscriber
+
         const response = await $axios.post<FrontendUserType>('/authentication/addUser', newUser.value);
-        users.value.push(response.data); // Add the new user to the list
+        users.value.push(response.data); 
         createUserSuccess.value = true;
-        // Optionally close modal after a delay or on user action
-        // setTimeout(() => { closeCreateUserModal(); }, 2000);
     } catch (err: any) {
         console.error('Error creating user:', err);
         createUserManager.value.error = err.response?.data?.message || 'Failed to create user';
@@ -229,10 +222,9 @@ const deleteUser = async () => {
 
     try {
         await $axios.delete(`/user/${userIdToDelete.value}`);
-        users.value = users.value.filter(user => user.id !== userIdToDelete.value); // Remove user from list
+        users.value = users.value.filter(user => user.id !== userIdToDelete.value);
         userIdToDelete.value = null;
         showDeleteConfirmModal.value = false;
-        // Optionally show a success message
     } catch (err: any) {
         console.error('Error deleting user:', err);
         deleteUserManager.value.error = err.response?.data?.message || 'Failed to delete user';
@@ -248,7 +240,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Add any specific styles here */
 .fade-in-overlay {
     animation: fadeIn 0.3s ease-out;
 }

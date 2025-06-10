@@ -113,7 +113,7 @@
                                 <div>
                                     <label for="promo-price"
                                         class="block mb-1 text-sm font-medium text-gray-900">Promotional Price
-                                        ($)</label>
+                                        (DA)</label>
                                     <input v-model.number="product.promotionPrice" type="number" id="promo-price"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         placeholder="2499" min="0" step="0.01" @input="calculateDiscount">
@@ -130,7 +130,7 @@
                                 </div>
                             </div>
                             <div v-if="product.promotionPrice" class="text-sm text-green-600">
-                                You're offering a {{ product.promotionPercentage }}% discount (Save ${{ (product.price -
+                                You're offering a {{ product.promotionPercentage }}% discount (Save DA{{ (product.price -
                                     product.promotionPrice).toFixed(2) }})
                             </div>
                             <div>

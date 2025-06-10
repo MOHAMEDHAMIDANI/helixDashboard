@@ -9,10 +9,10 @@
             </div>
         </div>
         <div class="metrics-grid">
-            <MetricCard title="Total Revenue" :value="`$${formatNumber(totalRevenue)}`" trend="up" :change="12.5" />
-            <MetricCard title="New Customers" :value="formatNumber(245)" trend="up" :change="8.2" />
-            <MetricCard title="Avg. Order Value" :value="`$${formatNumber(89.67)}`" trend="down" :change="3.4" />
-            <MetricCard title="Conversion Rate" :value="`${formatNumber(2.8)}%`" trend="up" :change="1.1" />
+            <MetricCard title="Total Revenue" :value="`DA${formatNumber(totalRevenue)}`" trend="up" :change="12.5" />
+            <MetricCard title="New Customers" :value="formatNumber(totalCustomers)" trend="up" :change="8.2" />
+            <MetricCard title="Avg. Order Value" :value="`DA${formatNumber(89.67)}`" trend="down" :change="3.4" />
+            <MetricCard title="Conversion Rate" :value="`${formatNumber(conversionRate)}%`" trend="up" :change="1.1" />
         </div>
         <div class="chart-container">
             <canvas ref="combinedChart"></canvas>
@@ -26,12 +26,16 @@
                 <h3>Sales Funnel</h3>
                 <canvas ref="funnelChart"></canvas>
             </div>
+            <div class="chart-wrapper">
+                <h3>Orders by Status</h3>
+                <canvas ref="ordersByStatusChart"></canvas>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { Chart, registerables } from 'chart.js'
 import annotationPlugin from 'chartjs-plugin-annotation'
 Chart.register(...registerables, annotationPlugin)
@@ -45,28 +49,51 @@ const props = defineProps({
 const combinedChart = ref(null)
 const doughnutChart = ref(null)
 const funnelChart = ref(null)
+const ordersByStatusChart = ref(null)
 const timeRange = ref('month')
-const chartData = {
+const chartData = ref({
     month: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        revenue: [12500, 18900, 17800, 21000, 23400, 27800, 31200, 29500, 28700, 32100, 35600, 38900],
-        sales: [142, 201, 178, 210, 234, 278, 312, 295, 287, 321, 356, 389],
-        categories: ['Electronics', 'Apparel', 'Home Goods', 'Accessories'],
-        categoryRevenue: [154200, 87600, 65300, 43200],
-        funnel: [1000, 750, 450, 200, 120]
+        labels: [],
+        revenue: [],
+        sales: [],
+        categories: [],
+        categoryRevenue: [],
+        funnelLabels: [],
+        funnelData: [],
+        ordersByStatusLabels: [],
+        ordersByStatusData: []
     },
     week: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        revenue: [4200, 5800, 5100, 6700, 8200, 10500, 9200],
-        sales: [42, 58, 51, 67, 82, 105, 92],
-        categories: ['Electronics', 'Apparel', 'Home Goods'],
-        categoryRevenue: [28700, 15600, 9800],
-        funnel: [350, 280, 190, 85, 45]
+        labels: [],
+        revenue: [],
+        sales: [],
+        categories: [],
+        categoryRevenue: [],
+        funnelLabels: [],
+        funnelData: [],
+        ordersByStatusLabels: [],
+        ordersByStatusData: []
+    },
+    year: {
+        labels: [],
+        revenue: [],
+        sales: [],
+        categories: [],
+        categoryRevenue: [],
+        funnelLabels: [],
+        funnelData: [],
+        ordersByStatusLabels: [],
+        ordersByStatusData: []
     }
-}
-const totalRevenue = computed(() => {
-    return chartData[timeRange.value].revenue.reduce((a, b) => a + b, 0)
 })
+
+const totalRevenue = computed(() => {
+    const revenueData = chartData.value[timeRange.value]?.revenue
+    return revenueData ? revenueData.reduce((a, b) => a + b, 0) : 0
+})
+
+const totalCustomers = ref(0)
+const conversionRate = ref(0)
 
 const setTimeRange = (range) => {
     timeRange.value = range
@@ -83,7 +110,7 @@ const getChartTheme = () => ({
 })
 
 const initCombinedChart = () => {
-    const { labels, revenue, sales } = chartData[timeRange.value]
+    const { labels, revenue, sales } = chartData.value[timeRange.value]
     const theme = getChartTheme()
 
     return new Chart(combinedChart.value, {
@@ -92,7 +119,7 @@ const initCombinedChart = () => {
             labels,
             datasets: [
                 {
-                    label: 'Revenue ($)',
+                    label: 'Revenue (DA)',
                     data: revenue,
                     backgroundColor: 'rgba(56, 178, 172, 0.7)',
                     borderColor: 'rgba(56, 178, 172, 1)',
@@ -129,14 +156,28 @@ const initCombinedChart = () => {
                     intersect: false,
                     backgroundColor: props.darkMode ? '#2D3748' : '#FFFFFF',
                     titleColor: theme.textColor,
-                    bodyColor: theme.textColor
+                    bodyColor: theme.textColor,
+                    callbacks: {
+                        label: function (context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.dataset.yAxisID === 'y') {
+                                label += `DA${formatNumber(context.raw)}`;
+                            } else {
+                                label += formatNumber(context.raw);
+                            }
+                            return label;
+                        }
+                    }
                 },
                 annotation: {
                     annotations: {
                         avgLine: {
                             type: 'line',
-                            yMin: revenue.reduce((a, b) => a + b, 0) / revenue.length,
-                            yMax: revenue.reduce((a, b) => a + b, 0) / revenue.length,
+                            yMin: revenue.length > 0 ? revenue.reduce((a, b) => a + b, 0) / revenue.length : 0,
+                            yMax: revenue.length > 0 ? revenue.reduce((a, b) => a + b, 0) / revenue.length : 0,
                             borderColor: 'rgba(245, 101, 101, 0.8)',
                             borderWidth: 2,
                             borderDash: [6, 6],
@@ -169,7 +210,7 @@ const initCombinedChart = () => {
                     },
                     ticks: {
                         color: theme.textColor,
-                        callback: (value) => `$${formatNumber(value)}`
+                        callback: (value) => `DA${formatNumber(value)}`
                     }
                 },
                 y1: {
@@ -190,7 +231,7 @@ const initCombinedChart = () => {
 }
 
 const initDoughnutChart = () => {
-    const { categories, categoryRevenue } = chartData[timeRange.value]
+    const { categories, categoryRevenue } = chartData.value[timeRange.value]
     const theme = getChartTheme()
 
     return new Chart(doughnutChart.value, {
@@ -203,7 +244,8 @@ const initDoughnutChart = () => {
                     'rgba(66, 153, 225, 0.7)',
                     'rgba(102, 126, 234, 0.7)',
                     'rgba(159, 122, 234, 0.7)',
-                    'rgba(237, 100, 166, 0.7)'
+                    'rgba(237, 100, 166, 0.7)',
+                    'rgba(56, 178, 172, 0.7)'
                 ],
                 borderColor: props.darkMode ? '#1A202C' : '#FFFFFF',
                 borderWidth: 2
@@ -222,37 +264,34 @@ const initDoughnutChart = () => {
                 tooltip: {
                     callbacks: {
                         label: (context) => {
-                            const label = context.label || ''
-                            const value = context.raw || 0
-                            const total = context.dataset.data.reduce((a, b) => a + b, 0)
-                            const percentage = Math.round((value / total) * 100)
-                            return `${label}: $${formatNumber(value)} (${percentage}%)`
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += `DA${formatNumber(context.raw)}`;
+                            return label;
                         }
-                    },
-                    backgroundColor: props.darkMode ? '#2D3748' : '#FFFFFF',
-                    titleColor: theme.textColor,
-                    bodyColor: theme.textColor
+                    }
                 }
-            },
-            cutout: '70%'
+            }
         }
     })
 }
 
 const initFunnelChart = () => {
-    const { funnel } = chartData[timeRange.value]
+    const { funnelLabels, funnelData } = chartData.value[timeRange.value]
     const theme = getChartTheme()
 
     return new Chart(funnelChart.value, {
         type: 'bar',
         data: {
-            labels: ['Visits', 'Add to Cart', 'Initiate Checkout', 'Payment', 'Purchase'],
+            labels: funnelLabels,
             datasets: [{
-                data: funnel,
-                backgroundColor: 'rgba(72, 187, 120, 0.6)',
-                borderColor: 'rgba(72, 187, 120, 1)',
-                borderWidth: 1,
-                borderRadius: 4
+                label: 'Customers',
+                data: funnelData,
+                backgroundColor: 'rgba(99, 179, 237, 0.7)',
+                borderColor: 'rgba(99, 179, 237, 1)',
+                borderWidth: 1
             }]
         },
         options: {
@@ -264,18 +303,32 @@ const initFunnelChart = () => {
                     display: false
                 },
                 tooltip: {
+                    mode: 'index',
+                    intersect: false,
                     backgroundColor: props.darkMode ? '#2D3748' : '#FFFFFF',
                     titleColor: theme.textColor,
-                    bodyColor: theme.textColor
+                    bodyColor: theme.textColor,
+                    callbacks: {
+                        label: (context) => {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += formatNumber(context.raw);
+                            return label;
+                        }
+                    }
                 }
             },
             scales: {
                 x: {
+                    beginAtZero: true,
                     grid: {
                         color: theme.gridColor
                     },
                     ticks: {
-                        color: theme.textColor
+                        color: theme.textColor,
+                        callback: (value) => formatNumber(value)
                     }
                 },
                 y: {
@@ -291,24 +344,112 @@ const initFunnelChart = () => {
     })
 }
 
+const orderStatusColors = {
+    pending: '#ECC94B',
+    processing: '#4299E1',
+    shipped: '#48BB78',
+    delivered: '#38B2AC',
+    canceled: '#F56565',
+    refunded: '#ED8936'
+}
+
+const initOrdersByStatusChart = () => {
+    const { ordersByStatusLabels, ordersByStatusData } = chartData.value[timeRange.value]
+    const theme = getChartTheme()
+
+    const backgroundColors = ordersByStatusLabels.map(label => orderStatusColors[label.toLowerCase()] || '#CBD5E0')
+    const borderColors = backgroundColors.map(color => color.replace('0.7', '1'))
+
+    return new Chart(ordersByStatusChart.value, {
+        type: 'pie',
+        data: {
+            labels: ordersByStatusLabels,
+            datasets: [{
+                data: ordersByStatusData,
+                backgroundColor: backgroundColors,
+                borderColor: borderColors,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: theme.textColor
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (context) => {
+                            const label = context.label || '';
+                            const value = context.raw;
+                            const total = context.dataset.data.reduce((sum, current) => sum + current, 0);
+                            const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : 0;
+                            return `${label}: ${formatNumber(value)} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
+
 let combinedChartInstance = null
 let doughnutChartInstance = null
 let funnelChartInstance = null
+let ordersByStatusChartInstance = null
 
-onMounted(() => {
-    combinedChartInstance = initCombinedChart()
-    doughnutChartInstance = initDoughnutChart()
-    funnelChartInstance = initFunnelChart()
-})
+const fetchSalesData = async (range) => {
+    try {
+        const salesResponse = await fetch(`http://localhost:3000/sales/sales-data?timeRange=${range}`)
+        const salesData = await salesResponse.json()
 
-watch([timeRange, () => props.darkMode], () => {
+        chartData.value[range] = {
+            labels: salesData.labels,
+            revenue: salesData.revenue,
+            sales: salesData.sales || [],
+            categories: salesData.categories || [],
+            categoryRevenue: salesData.categoryRevenue || [],
+            funnelLabels: salesData.funnelLabels || [],
+            funnelData: salesData.funnelData || [],
+            ordersByStatusLabels: salesData.ordersByStatusLabels || [],
+            ordersByStatusData: salesData.ordersByStatusData || []
+        }
+
+        const metricsResponse = await fetch('http://localhost:3000/sales/dashboard-metrics')
+        const metricsData = await metricsResponse.json()
+        totalCustomers.value = metricsData.totalCustomers
+        conversionRate.value = metricsData.conversionRate
+
+        initAllCharts()
+    } catch (error) {
+        console.error('Error fetching sales data:', error)
+    }
+}
+
+const initAllCharts = () => {
     if (combinedChartInstance) combinedChartInstance.destroy()
     if (doughnutChartInstance) doughnutChartInstance.destroy()
     if (funnelChartInstance) funnelChartInstance.destroy()
+    if (ordersByStatusChartInstance) ordersByStatusChartInstance.destroy()
 
-    combinedChartInstance = initCombinedChart()
-    doughnutChartInstance = initDoughnutChart()
-    funnelChartInstance = initFunnelChart()
+    if (chartData.value[timeRange.value].labels.length > 0) {
+        combinedChartInstance = initCombinedChart()
+        doughnutChartInstance = initDoughnutChart()
+        funnelChartInstance = initFunnelChart()
+        ordersByStatusChartInstance = initOrdersByStatusChart()
+    }
+}
+
+watch([timeRange, () => props.darkMode, chartData], () => {
+    initAllCharts()
+})
+
+onMounted(() => {
+    fetchSalesData(timeRange.value)
 })
 </script>
 
@@ -389,7 +530,6 @@ watch([timeRange, () => props.darkMode], () => {
     font-weight: 500;
 }
 
-/* Dark mode variables */
 :root {
     --text-color: #2D3748;
     --border-color: #E2E8F0;

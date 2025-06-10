@@ -43,7 +43,10 @@
         <div class="flex flex-col gap-1 flex-1 overflow-y-auto px-2 py-4">
             <nav aria-label="Main" class="flex flex-col gap-1">
                 <nuxtLink :to="{ name: 'index' }" class="flex items-center p-2 rounded-lg transition-colors"
-                    :class="NavStore.NavIsOpen ? 'text-blue-600 bg-blue-50 justify-start' : 'text-gray-600 hover:bg-gray-100 justify-center'"
+                    :class="[
+                        NavStore.NavIsOpen ? 'justify-start' : 'justify-center',
+                        isActive('index') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-100'
+                    ]"
                     aria-current="page">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M15 20v-7h7v7zm-4-9V4h11v7zm-9 9v-7h11v7zm0-9V4h7v7z" />
@@ -52,8 +55,11 @@
                 </nuxtLink>
 
                 <nuxtLink :to="{ name: 'Inbox' }"
-                    class="flex items-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
-                    :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'">
+                    class="flex items-center p-2 rounded-lg transition-colors"
+                    :class="[
+                        NavStore.NavIsOpen ? 'justify-start' : 'justify-center',
+                        isActive('Inbox') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-100'
+                    ]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
                         <g fill="none" stroke="currentColor" stroke-width="1.5">
                             <path
@@ -67,8 +73,11 @@
                 </nuxtLink>
 
                 <nuxtLink :to="{ name: 'Product' }"
-                    class="flex items-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
-                    :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'">
+                    class="flex items-center p-2 rounded-lg transition-colors"
+                    :class="[
+                        NavStore.NavIsOpen ? 'justify-start' : 'justify-center',
+                        isActive('Product') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-100'
+                    ]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 48 48">
                         <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
                             <path d="M44 14L24 4L4 14v20l20 10l20-10z" />
@@ -79,8 +88,11 @@
                 </nuxtLink>
 
                 <nuxtLink :to="{ name: 'Orders' }"
-                    class="flex items-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
-                    :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'">
+                    class="flex items-center p-2 rounded-lg transition-colors"
+                    :class="[
+                        NavStore.NavIsOpen ? 'justify-start' : 'justify-center',
+                        isActive('Orders') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-100'
+                    ]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
                         <path fill="currentColor"
                             d="M4 18V7.1L2.45 3.75q-.175-.375-.025-.763t.525-.562t.763-.037t.562.512L6.2 7.05h11.6l1.925-4.15q.175-.375.563-.525t.762.05q.375.175.525.563t-.025.762L20 7.1V18q0 .825-.587 1.413T18 20H6q-.825 0-1.412-.587T4 18m6-5h4q.425 0 .713-.288T15 12t-.288-.712T14 11h-4q-.425 0-.712.288T9 12t.288.713T10 13" />
@@ -88,8 +100,11 @@
                     <span v-if="NavStore.NavIsOpen" class="ml-3">Orders</span>
                 </nuxtLink>
                 <NuxtLink :to="{ name: 'index' }"
-                    class="flex items-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
-                    :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'">
+                    class="flex items-center p-2 rounded-lg transition-colors"
+                    :class="[
+                        NavStore.NavIsOpen ? 'justify-start' : 'justify-center',
+                        isActive('index') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-100'
+                    ]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
                         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                             stroke-width="1.5">
@@ -109,7 +124,7 @@
                 :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'">
                 <img :src="'http://localhost:3000/uploads/Profile/' + authStore.user?.avatar" alt="Profile" class="h-8 w-8 rounded-full">
                 <div v-if="NavStore.NavIsOpen" class="text-left ml-3">
-                    <p class="text-sm font-medium text-gray-800">{{ authStore.user?.name }}</p>
+                    <p class="text-sm font-medium text-gray-800">{{ authStore.user?.fullName }}</p>
                 </div>
             </nuxtLink>
         </div>
@@ -120,4 +135,9 @@
 const NavStore = useNavStore()
 const authStore = useAuthStore()
 const notificationStore = useNotificationStore()
+const route = useRoute()
+
+const isActive = (name: string) => {
+    return route.name === name
+}
 </script>

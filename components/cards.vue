@@ -15,10 +15,10 @@
                     <div class="text-xs font-medium text-gray-500 uppercase tracking-wider">Customers</div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-2xl font-semibold text-gray-900">905</span>
+                    <span class="text-2xl font-semibold text-gray-900">{{ formatNumber(metrics.totalCustomers) }}</span>
                     <span
                         class="font-medium inline-flex items-center px-2 py-1 rounded-full bg-green-50 text-green-600 ring-1 ring-green-100 text-xs">
-                        +7%
+                        {{ formatPercentage(metrics.customerChange) }}
                     </span>
                 </div>
             </div>
@@ -40,10 +40,10 @@
                     <div class="text-xs font-medium text-gray-500 uppercase tracking-wider">Conversions</div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-2xl font-semibold text-gray-900">1,312</span>
+                    <span class="text-2xl font-semibold text-gray-900">{{ formatNumber(metrics.conversionRate) }}%</span>
                     <span
-                        class="font-medium inline-flex items-center px-2 py-1 rounded-full bg-red-50 text-red-600 ring-1 ring-red-100 text-xs">
-                        -8%
+                        class="font-medium inline-flex items-center px-2 py-1 rounded-full bg-green-50 text-green-600 ring-1 ring-green-100 text-xs">
+                        {{ formatPercentage(metrics.conversionChange) }}
                     </span>
                 </div>
             </div>
@@ -64,10 +64,10 @@
                     <div class="text-xs font-medium text-gray-500 uppercase tracking-wider">Revenue</div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-2xl font-semibold text-gray-900">$353,999</span>
+                    <span class="text-2xl font-semibold text-gray-900">DA{{ formatNumber(metrics.totalRevenue) }}</span>
                     <span
                         class="font-medium inline-flex items-center px-2 py-1 rounded-full bg-green-50 text-green-600 ring-1 ring-green-100 text-xs">
-                        +12%
+                        {{ formatPercentage(metrics.revenueChange) }}
                     </span>
                 </div>
             </div>
@@ -87,10 +87,10 @@
                     <div class="text-xs font-medium text-gray-500 uppercase tracking-wider">Orders</div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-2xl font-semibold text-gray-900">273</span>
+                    <span class="text-2xl font-semibold text-gray-900">{{ formatNumber(metrics.totalOrders) }}</span>
                     <span
                         class="font-medium inline-flex items-center px-2 py-1 rounded-full bg-green-50 text-green-600 ring-1 ring-green-100 text-xs">
-                        +10%
+                        {{ formatPercentage(metrics.orderChange) }}
                     </span>
                 </div>
             </div>
@@ -100,7 +100,52 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 
+interface Metrics {
+    totalRevenue: number
+    totalCustomers: number
+    totalOrders: number
+    conversionRate: number
+    customerChange?: number
+    conversionChange?: number
+    revenueChange?: number
+    orderChange?: number
+}
+
+const metrics = ref<Metrics>({
+    totalRevenue: 0,
+    totalCustomers: 0,
+    totalOrders: 0,
+    conversionRate: 0,
+    customerChange: 0,
+    conversionChange: 0,
+    revenueChange: 0,
+    orderChange: 0
+})
+
+const formatNumber = (num: number) => {
+    return new Intl.NumberFormat().format(num)
+}
+
+const formatPercentage = (num: number) => {
+    const sign = num >= 0 ? '+' : ''
+    return `${sign}${num}%`
+}
+
+const fetchMetrics = async () => {
+    try {
+        const response = await fetch('http://localhost:3000/sales/dashboard-metrics')
+        const data: Metrics = await response.json()
+        metrics.value = { ...metrics.value, ...data }
+    } catch (error) {
+        console.error('Error fetching metrics:', error)
+    }
+}
+
+onMounted(() => {
+    fetchMetrics()
+})
 </script>
 
 <style scoped></style>

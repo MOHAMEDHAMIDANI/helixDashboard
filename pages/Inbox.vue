@@ -167,9 +167,7 @@ const fetchInboxMessages = async () => {
     error.value = null;
     try {
         const response = await $axios.get('/inbox');
-        // Assuming the backend returns an array of messages
         emails.value = response.data;
-        // Select the first email by default if any exist
         if (emails.value.length > 0) {
             selectEmail(emails.value[0]);
         }
@@ -201,31 +199,30 @@ function selectEmail(email) {
     if (!email.isRead) {
         markAsRead(email);
     }
-    showReplyForm.value = false; // Close reply form when selecting new email
-    replyContent.value = ''; // Clear reply content
-    replySuccess.value = false; // Reset reply state
-    replyError.value = false; // Reset reply state
-    replyErrorMessage.value = ''; // Reset reply state
+    showReplyForm.value = false; 
+    replyContent.value = ''; 
+    replySuccess.value = false;
+    replyError.value = false;
+    replyErrorMessage.value = ''; 
 }
 
 async function markAsRead(email) {
-     if (email.isRead) return; // Already read
+     if (email.isRead) return; 
     try {
         await $axios.patch(`/inbox/${email.id}/read`);
-        email.isRead = true; // Update local state
+        email.isRead = true;
     } catch (err) {
         console.error("Error marking as read:\\", err);
-        // Optionally show an error notification
     }
 }
 
 function toggleReplyForm() {
     showReplyForm.value = !showReplyForm.value;
      if (!showReplyForm.value) {
-        replyContent.value = ''; // Clear reply content if closing
-        replySuccess.value = false; // Reset reply state
-        replyError.value = false; // Reset reply state
-        replyErrorMessage.value = ''; // Reset reply state
+        replyContent.value = '';
+        replySuccess.value = false; 
+        replyError.value = false; 
+        replyErrorMessage.value = '';
     }
 }
 
@@ -238,16 +235,14 @@ async function sendReply() {
     replyErrorMessage.value = '';
 
     try {
-        // Call backend endpoint to send reply
         const response = await $axios.post(`/inbox/${selectedEmail.value.id}/reply`, {
             replyMessage: replyContent.value
         });
 
-        if (response.status === 200) { // Assuming 200 OK for success
+        if (response.status === 200) { 
             replySuccess.value = true;
-            replyContent.value = ''; // Clear input on success
-            // Optionally refresh messages or update UI
-        } else { // Handle non-200 responses
+            replyContent.value = ''; 
+        } else {
             replyError.value = true;
             replyErrorMessage.value = response.data.message || 'Failed to send reply';
         }

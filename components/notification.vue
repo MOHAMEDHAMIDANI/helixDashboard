@@ -12,7 +12,7 @@ const notifications = ref<HTMLElement | null>(null);
 const socket = ref<any>(null);
 const reconnectAttempts = ref(0);
 const maxReconnectAttempts = 5;
-const reconnectDelay = 3000; // 3 seconds
+const reconnectDelay = 3000
 const notificationSound = ref<HTMLAudioElement | null>(null);
 
 const connectSocket = () => {
@@ -56,7 +56,6 @@ const connectSocket = () => {
 
   socket.value.on('notification', (notification: any) => {
     notificationStore.addNotification(notification);
-    // Play notification sound
     if (notificationSound.value) {
       notificationSound.value.currentTime = 0;
       notificationSound.value.play().catch(err => console.error('Error playing notification sound:', err));
@@ -67,7 +66,6 @@ const connectSocket = () => {
 onMounted(() => {
   notificationStore.loadStoredNotifications();
   connectSocket();
-  // Initialize notification sound
   notificationSound.value = new Audio('/notification.mp3');
 });
 
@@ -90,26 +88,24 @@ const formatTimestamp = (timestamp: string) => {
   const now = new Date();
   const diff = now.getTime() - date.getTime();
   
-  // Less than 1 minute
   if (diff < 60000) {
     return 'Just now';
   }
-  // Less than 1 hour
+
   if (diff < 3600000) {
     const minutes = Math.floor(diff / 60000);
     return `${minutes}m ago`;
   }
-  // Less than 24 hours
+
   if (diff < 86400000) {
     const hours = Math.floor(diff / 3600000);
     return `${hours}h ago`;
   }
-  // Less than 7 days
+
   if (diff < 604800000) {
     const days = Math.floor(diff / 86400000);
     return `${days}d ago`;
   }
-  // Otherwise show the date
   return date.toLocaleDateString();
 };
 </script>
