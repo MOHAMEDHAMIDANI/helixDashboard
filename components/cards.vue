@@ -22,7 +22,6 @@
                     </span>
                 </div>
             </div>
-            <a href="/customers" tabindex="-1" aria-label="Customers" class="absolute inset-0 focus:outline-none"></a>
         </div>
         <div
             class="relative flex rounded-xl bg-white/50 ring-1 ring-gray-200 transition-all hover:bg-white hover:ring-blue-300 hover:shadow-md lg:rounded-none lg:first:rounded-l-xl lg:last:rounded-r-xl hover:z-10">
@@ -47,8 +46,6 @@
                     </span>
                 </div>
             </div>
-            <a href="/conversions" tabindex="-1" aria-label="Conversions"
-                class="absolute inset-0 focus:outline-none"></a>
         </div>
         <div
             class="relative flex rounded-xl bg-white/50 ring-1 ring-gray-200 transition-all hover:bg-white hover:ring-blue-300 hover:shadow-md lg:rounded-none lg:first:rounded-l-xl lg:last:rounded-r-xl hover:z-10">
@@ -71,7 +68,6 @@
                     </span>
                 </div>
             </div>
-            <a href="/revenue" tabindex="-1" aria-label="Revenue" class="absolute inset-0 focus:outline-none"></a>
         </div>
         <div
             class="relative flex rounded-xl bg-white/50 ring-1 ring-gray-200 transition-all hover:bg-white hover:ring-blue-300 hover:shadow-md lg:rounded-none lg:first:rounded-l-xl lg:last:rounded-r-xl hover:z-10">
@@ -94,7 +90,6 @@
                     </span>
                 </div>
             </div>
-            <a href="/orders" tabindex="-1" aria-label="Orders" class="absolute inset-0 focus:outline-none"></a>
         </div>
     </div>
 </template>
@@ -135,8 +130,9 @@ const formatPercentage = (num: number) => {
 
 const fetchMetrics = async () => {
     try {
-        const response = await fetch('http://localhost:3000/sales/dashboard-metrics')
-        const data: Metrics = await response.json()
+        const { $axios } = useNuxtApp()
+        const response = await $axios.get('/sales/dashboard-metrics')
+        const data: Metrics = response.data
         metrics.value = { ...metrics.value, ...data }
     } catch (error) {
         console.error('Error fetching metrics:', error)

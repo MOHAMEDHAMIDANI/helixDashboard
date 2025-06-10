@@ -122,7 +122,7 @@
         <div class="shrink-0 flex items-center p-2 border-t border-gray-200">
             <nuxtLink :to="{ name: 'Profile' }"  type="button" class="flex items-center p-1 rounded-lg hover:bg-gray-100 transition-colors w-full"
                 :class="NavStore.NavIsOpen ? 'justify-start' : 'justify-center'">
-                <img :src="'http://localhost:3000/uploads/Profile/' + authStore.user?.avatar" alt="Profile" class="h-8 w-8 rounded-full">
+                <img :src="`${backendUrl}/uploads/Profile/`+ authStore.user?.avatar" alt="Profile" class="h-8 w-8 rounded-full">
                 <div v-if="NavStore.NavIsOpen" class="text-left ml-3">
                     <p class="text-sm font-medium text-gray-800">{{ authStore.user?.fullName }}</p>
                 </div>
@@ -132,10 +132,21 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useNavStore } from '~/stores/navStore'
+import { useAuthStore } from '~/stores/auth'
+import { useNotificationStore } from '~/stores/notifications'
+import { useRoute, useRouter } from 'vue-router'
+
 const NavStore = useNavStore()
 const authStore = useAuthStore()
 const notificationStore = useNotificationStore()
 const route = useRoute()
+const router = useRouter()
+
+const backendUrl = computed(() => {
+    return import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'
+})
 
 const isActive = (name: string) => {
     return route.name === name

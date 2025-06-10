@@ -46,8 +46,6 @@
                 </table>
             </div>
         </div>
-
-        <!-- Create User Modal -->
          <Modal :isOpen="showCreateUserModal" @close="closeCreateUserModal">
              <template #title>
                 Create New User
@@ -91,8 +89,6 @@
                     </div>
              </template>
          </Modal>
-
-        <!-- Delete Confirmation Modal -->
          <Modal :isOpen="showDeleteConfirmModal" @close="cancelDelete">
               <template #title>
                 <div class="flex items-center gap-2 text-red-600">

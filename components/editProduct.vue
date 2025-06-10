@@ -147,7 +147,7 @@
                         <div class="flex flex-wrap gap-4">
                             <div v-for="(image, index) in existingImages" :key="'existing-' + index"
                                 class="relative w-32 h-32 border rounded-lg overflow-hidden">
-                                <img :src="'http://localhost:3000/uploads/Product/' + image"
+                                <img :src="`${backendUrl}/uploads/Product/` + image"
                                     class="w-full h-full object-cover" alt="Product preview">
                                 <button type="button" @click="removeExistingImage(index)"
                                     class="absolute top-1 right-1 bg-white rounded-full p-1 shadow-sm hover:bg-gray-100">
@@ -211,7 +211,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount, watch } from 'vue'
+import { ref, onBeforeUnmount, watch, computed } from 'vue'
 import type { Product, Category } from '~/types'
 
 const props = defineProps<{
@@ -239,6 +239,11 @@ const product = ref({
 
 const existingImages = ref<string[]>(props.productData.image || []);
 const imagesToDelete = ref<string[]>([]);
+
+const backendUrl = computed(() => {
+    return import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+});
+
 watch(() => props.productData, (newVal) => {
     product.value = {
         id: newVal.id,

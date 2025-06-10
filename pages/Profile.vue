@@ -4,7 +4,7 @@
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
                     <div class="relative">
-                        <img :src="'http://localhost:3000/uploads/Profile/' + authStore.user?.avatar" alt="Profile" class="w-16 h-16 rounded-full">
+                        <img :src="`${backendUrl}/uploads/Profile/` + authStore.user?.avatar" alt="Profile" class="w-16 h-16 rounded-full">
                         <button @click="triggerFileInput"
                             class="absolute bottom-0 right-0 p-1.5 bg-white dark:bg-gray-800 rounded-full border border-gray-200 dark:border-gray-700 shadow-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600 dark:text-gray-400"
@@ -159,8 +159,11 @@ const editMode = ref(false);
 const showDeleteModal = ref(false);
 const showCurrentPassword = ref(false);
 const showNewPassword = ref(false);
+const loading = ref(false);
 
-
+const backendUrl = computed(() => {
+    return import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+});
 
 const editableUser = ref<User>({});
 onMounted(() => {

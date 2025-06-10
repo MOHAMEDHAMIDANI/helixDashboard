@@ -404,8 +404,9 @@ let ordersByStatusChartInstance = null
 
 const fetchSalesData = async (range) => {
     try {
-        const salesResponse = await fetch(`http://localhost:3000/sales/sales-data?timeRange=${range}`)
-        const salesData = await salesResponse.json()
+        const { $axios } = useNuxtApp()
+        const salesResponse = await $axios.get(`/sales/sales-data?timeRange=${range}`)
+        const salesData = salesResponse.data
 
         chartData.value[range] = {
             labels: salesData.labels,
@@ -418,9 +419,8 @@ const fetchSalesData = async (range) => {
             ordersByStatusLabels: salesData.ordersByStatusLabels || [],
             ordersByStatusData: salesData.ordersByStatusData || []
         }
-
-        const metricsResponse = await fetch('http://localhost:3000/sales/dashboard-metrics')
-        const metricsData = await metricsResponse.json()
+        const metricsResponse = await $axios.get('/sales/dashboard-metrics')
+        const metricsData = metricsResponse.data
         totalCustomers.value = metricsData.totalCustomers
         conversionRate.value = metricsData.conversionRate
 

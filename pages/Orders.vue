@@ -53,15 +53,12 @@
                     </div>
                 </div>
                 <div class="flex-1 overflow-y-auto">
-                    <!-- Loading State -->
                     <div v-if="isLoading" class="flex items-center justify-center h-full">
                         <div class="text-center">
                             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
                             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Loading orders...</p>
                         </div>
                     </div>
-
-                    <!-- Error State -->
                     <div v-else-if="error" class="flex items-center justify-center h-full">
                         <div class="text-center p-6">
                             <XCircleIcon class="w-12 h-12 mx-auto text-red-500" />
@@ -72,8 +69,6 @@
                             </button>
                         </div>
                     </div>
-
-                    <!-- Empty State -->
                     <div v-else-if="filteredOrders.length === 0" class="flex items-center justify-center h-full">
                         <div class="text-center p-6">
                             <PackageIcon class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-700" />
@@ -83,8 +78,6 @@
                             </p>
                         </div>
                     </div>
-
-                    <!-- Orders List -->
                     <div v-else>
                         <div v-for="order in filteredOrders" :key="order.id" 
                             @click="selectOrder(order)"
@@ -228,13 +221,12 @@
                                 <div v-for="(item, index) in selectedOrder.products || []" :key="index"
                                     class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                                     <div class="relative w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden flex-shrink-0">
-                                        <img :src="'http://localhost:3000/uploads/Product/' + item.product?.image[0]" 
+                                        <img :src="`${backendUrl}/uploads/Product/` + item.product?.image[0]" 
                                              :alt="item.nameAtOrder || 'Product Image'" 
                                              class="w-full h-full object-cover">
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-sm font-medium text-gray-900 dark:text-white">{{ item.nameAtOrder || 'Unknown Product' }}</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">SKU: {{ item.product?.sku || 'N/A' }}</p>
                                     </div>
                                     <div class="text-right">
                                         <p class="text-sm font-medium text-gray-900 dark:text-white">
@@ -288,8 +280,6 @@
                     </div>
                 </div>
             </transition>
-
-            <!-- Custom Cancel Confirmation Dialog -->
             <div v-if="showCancelDialog" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-sm w-full">
                     <div class="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 dark:bg-red-900/30 rounded-full">
@@ -326,6 +316,7 @@
 import { ref, computed, onMounted } from 'vue'
 import MainLayout from '~/layouts/mainLayout.vue'
 import { useNotificationStore } from '~/stores/notifications'
+import { useOrderStore } from '~/stores/orders'
 import {
     Menu as MenuIcon,
     X as XIcon,
@@ -345,6 +336,7 @@ import {
 
 const { $axios } = useNuxtApp()
 const notificationStore = useNotificationStore()
+const orderStore = useOrderStore()
 const orders = ref([])
 const filter = ref('all')
 const searchQuery = ref('')
@@ -355,6 +347,10 @@ const showItemsFullscreen = ref(false)
 const showStatusMenu = ref(false)
 const isLoading = ref(true)
 const error = ref(null)
+
+const backendUrl = computed(() => {
+    return import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+});
 
 const tabs = [
     { label: 'All', value: 'all' },

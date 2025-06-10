@@ -107,7 +107,7 @@
             <div class="shrink-0  px-6 py-3 border-t border-gray-200">
                 <nuxtLink :to="{ name: 'Profile' }" type="button"
                     class="cursor-pointer duration-300 flex items-center gap-3 w-full px-3 py-1.5 rounded-lg hover:bg-gray-100">
-                    <img :src="'http://localhost:3000/uploads/Profile/' + authStore.user?.avatar" alt="Profile" class="h-5 w-5 rounded-full">
+                    <img :src="`${backendUrl}/uploads/Profile/` + authStore.user?.avatar" alt="Profile" class="h-5 w-5 rounded-full">
                     <span class="truncate">{{ authStore.user?.fullName }}</span>
                 </nuxtLink>
             </div>
@@ -121,9 +121,14 @@ const NavStore = useNavStore()
 const authStore = useAuthStore()
 const notificationStore = useNotificationStore()
 const route = useRoute()
+const router = useRouter()
 const NavBarFull = ref<HTMLElement | null>(null)
 
 const isMobile = computed(() => window.innerWidth < 1024)
+
+const backendUrl = computed(() => {
+    return import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+});
 
 const isActive = (name: string) => {
     return route.name === name

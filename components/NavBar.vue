@@ -80,18 +80,6 @@
                                 </svg>
                                 <span>New user</span>
                             </nuxtLink>
-
-                            <!-- <nuxtLink :to="{ name: 'Category' }"
-                                class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                role="menuitem">
-                                <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24">
-                                    <path fill="none" stroke="currentColor" stroke-linecap="round"
-                                        stroke-linejoin="round" stroke-width="2"
-                                        d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 3h6m-3-3v6" />
-                                </svg>
-                                <span>New category</span>
-                            </nuxtLink> -->
                         </div>
                     </div>
                 </transition>

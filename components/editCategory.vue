@@ -9,7 +9,6 @@
 
         <template #content>
             <div class="mt-4 space-y-6">
-                <!-- Category Select Dropdown -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
                         Select Category
@@ -46,8 +45,6 @@
                         </transition>
                     </div>
                 </div>
-
-                <!-- Edit Form -->
                 <div class="space-y-1">
                     <label for="new-category-name" class="block text-sm font-medium text-gray-700">
                         New Name
@@ -76,8 +73,6 @@
             </div>
         </template>
     </Modal>
-
-    <!-- Delete Confirmation Modal -->
     <Modal :isOpen="showDeleteConfirmation" @close="showDeleteConfirmation = false">
         <template #title>
             <div class="flex items-center">

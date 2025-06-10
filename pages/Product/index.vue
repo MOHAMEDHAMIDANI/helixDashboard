@@ -49,7 +49,7 @@
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10">
                                             <img class="h-10 w-10 rounded-md object-cover"
-                                                :src="'http://localhost:3000/uploads/Product/' + product.image[0]"
+                                                :src="`${backendUrl}/uploads/Product/` + product.image[0]"
                                                 :alt="product.productName">
                                         </div>
                                         <div class="ml-4">
@@ -203,20 +203,20 @@ const editingProduct = ref<Product | null>(null)
 const productToDelete = ref<string | null>(null)
 const categoryStore = useCategoryStore()
 const productStore = useProductStore()
+const loading = ref(true)
+
+const backendUrl = computed(() => {
+    return import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'
+})
 
 onMounted(async () => {
     await categoryStore.getCategories()
     await productStore.getProducts()
-    console.log('Products:', productStore.Products)
-    console.log('Categories:', categoryStore.categories)
 })
 const categories: ComputedRef<Category[]> = computed(() => categoryStore.categories)
-
-
 const openCreateCategoryModal = () => {
     showCreateCategory.value = true
 }
-
 const openEditCategoryModal = () => {
     if (categories.value.length > 0) {
         showEditCategory.value = true
@@ -224,16 +224,13 @@ const openEditCategoryModal = () => {
         alert('No categories available to edit')
     }
 }
-
 const openEditModal = (product: Product) => {
     editingProduct.value = product
 }
-
 const confirmDelete = async (id: string) => {
     productToDelete.value = id
     showDeleteConfirm.value = true
 }
-
 const deleteProduct = async () => {
     if (productToDelete.value) {
         await productStore.deleteProduct(productToDelete.value)
@@ -242,7 +239,6 @@ const deleteProduct = async () => {
         showDeleteConfirm.value = false
     }
 }
-
 const handleAddProduct = (formData: FormData) => {
     console.log('New Product Data:', formData)
     addProduct.value = false
